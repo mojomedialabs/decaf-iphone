@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>DECAF</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+	<link rel="stylesheet" media="screen" href="stylesheets/index.css" type="text/css">
+	<link rel="stylesheet" media="screen" href="stylesheets/jqtouch.css" type="text/css">
+	<link rel="stylesheet" media="screen" href="stylesheets/themes/apple/theme.css" type="text/css">
+	<!-- iPad/iPhone specific css below, add after your main css >
+	<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />
+	<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="iphone.css" type="text/css" />
+	-->
+	<!-- If your application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here -->
+	<script src="javascripts/phonegap-1.0.0.js"></script>
+	<script src="javascripts/jquery-1.4.2.min.js"></script>
+	<script src="javascripts/jqtouch.js"></script>
+	<script>
+		var jQT = new $.jQTouch( {
+			preloadImages: []
+		});
+
+		// If you want to prevent dragging, uncomment this section
+		/*
+		function preventBehavior(e)
+		{
+			e.preventDefault();
+		};
+		document.addEventListener("touchmove", preventBehavior, false);
+		*/
+
+		/* If you are supporting your own protocol, the var invokeString will contain any arguments to the app launch.
+		see http://iphonedevelopertips.com/cocoa/launching-your-own-application-via-a-custom-url-scheme.html
+		for more details -jm */
+		/*
+		function handleOpenURL(url)
+		{
+			// TODO: do something with the url passed in.
+		}
+		*/
+
+		function onBodyLoad()
+		{
+			document.addEventListener("deviceready", onDeviceReady, false);
+		}
+
+		/* When this function is called, PhoneGap has been initialized and is ready to roll */
+		/* If you are supporting your own protocol, the var invokeString will contain any arguments to the app launch.
+		see http://iphonedevelopertips.com/cocoa/launching-your-own-application-via-a-custom-url-scheme.html
+		for more details -jm */
+		function onDeviceReady()
+		{
+
+		}
+
+		$(function() {
+			$("#slbtn").click(function(event) {
+				event.preventDefault();
+
+				$("#slbtn").attr("disabled", true);
+
+				var jqxhr = $.post("https://www.bkcert.com/login/login.php", $("form#aform").serialize(),
+					function(data, textStatus, jqXHR) {
+
+						//alert("data: " + data + "\n" + "textStatus: " + textStatus + " \n" + "jqXHR: " + jqXHR);
+						var result = $(".error", $(data));
+
+						if (result.length) {
+							$("#slbtn").attr("disabled", false);
+
+							alert("Login failed! Please try again.");
+						} else {
+							alert("Welcome back!");
+
+							jQT.goTo("#main-menu", "flip");
+						}
+					}, 'html');
+			});
+		});
+	</script>
+</head>
+<body onload="onBodyLoad()">
+	<div id="jqt">
+		<div id="login" class="current page">
+			<h1>DECAF</h2>
+			<form name="aform" id="aform" action="#" method="post" enctype="multipart/form-data" data-ajax="false" />
+				<input type="hidden" name="current_page" id="current_page" value="" />
+				<input type="hidden" name="next_page" id="next_page" value="" />
+				<input type="hidden" name="easter_egg" id="easter_egg" value="0" />
+				<input type="hidden" name="button_name" id="button_name" value="login" />
+				<input type="text" name="ccUsers__username" id="ccUsers__username" value="" />
+				<input type="password" name="ccUsers__password" id="ccUsers__password" value=""/>
+				<!--<input type="button" name="slbtn" id="slbtn" value="Start Course" onclick="$ ( 'form#aform' ).attr ( 'action', 'http://bkcert.com/course/' ).attr ( 'onsubmit', '' ); $ ( 'form#aform' ).submit ( ); return false;">-->
+				<input type="button" name="slbtn" id="slbtn" value="Log In" />
+			</form>
+		</div>
+		<div id="main-menu">
+			<nav id="main-nav">
+				<ul>
+					<li><a href="#view-clients">View Clients</a></li>
+					<li><a href="#enroll-clients">Enroll Clients</a></li>
+				</ul>
+			</nav>
+		</div>
+		<div id="view-clients">
+			<nav class="top-nav">
+				<ul>
+					<li><a href="#main-menu">Home</a></li>
+				</ul>
+			</nav>
+		</div>
+		<div id="enroll-clients">
+		</div>
+		<div id="enroll-client">
+		</div>
+		<div id="enrollment-verification">
+		</div>
+		<div id="settings">
+		</div>
+	</div>
+</body>
+</html>

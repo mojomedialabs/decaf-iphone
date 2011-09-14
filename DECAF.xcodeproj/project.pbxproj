@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8467043C141EB46A00A19ED7 /* www in Resources */ = {isa = PBXBuildFile; fileRef = 8467043B141EB46A00A19ED7 /* www */; };
 		84834FC9141E3D070044E037 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84834FC8141E3D070044E037 /* Foundation.framework */; };
 		84834FCB141E3D070044E037 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84834FCA141E3D070044E037 /* UIKit.framework */; };
 		84834FCD141E3D070044E037 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84834FCC141E3D070044E037 /* CoreGraphics.framework */; };
@@ -36,6 +37,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8467043B141EB46A00A19ED7 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = SOURCE_ROOT; };
 		84834FC4141E3D060044E037 /* DECAF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DECAF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84834FC8141E3D070044E037 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		84834FCA141E3D070044E037 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -50,10 +52,10 @@
 		84834FDC141E3D070044E037 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		84834FDE141E3D070044E037 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		84834FE0141E3D070044E037 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		84834FE4141E3D070044E037 /* DECAF-Info.plist */ = {isa = PBXFileReference; path = "DECAF-Info.plist"; sourceTree = "<group>"; };
+		84834FE4141E3D070044E037 /* DECAF-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DECAF-Info.plist"; sourceTree = "<group>"; };
 		84834FE6141E3D070044E037 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		84834FE8141E3D070044E037 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		84834FEA141E3D070044E037 /* DECAF-Prefix.pch */ = {isa = PBXFileReference; path = "DECAF-Prefix.pch"; sourceTree = "<group>"; };
+		84834FEA141E3D070044E037 /* DECAF-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DECAF-Prefix.pch"; sourceTree = "<group>"; };
 		84834FEB141E3D070044E037 /* PhoneGap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhoneGap.framework; path = /Users/Shared/PhoneGap/Frameworks/PhoneGap.framework; sourceTree = "<absolute>"; };
 		84834FF0141E3D070044E037 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		84834FF4141E3D070044E037 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = Resources/es.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -64,9 +66,9 @@
 		84835000141E3D070044E037 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/splash/Default@2x.png"; sourceTree = "<group>"; };
 		84835002141E3D070044E037 /* Capture.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Capture.bundle; path = Resources/Capture.bundle; sourceTree = "<group>"; };
 		84835004141E3D070044E037 /* PhoneGap.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PhoneGap.plist; sourceTree = "<group>"; };
-		84835007141E3D070044E037 /* AppDelegate.h */ = {isa = PBXFileReference; name = AppDelegate.h; path = Classes/AppDelegate.h; sourceTree = "<group>"; };
+		84835007141E3D070044E037 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Classes/AppDelegate.h; sourceTree = "<group>"; };
 		84835008141E3D070044E037 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Classes/AppDelegate.m; sourceTree = "<group>"; };
-		8483500B141E3D070044E037 /* README */ = {isa = PBXFileReference; name = README; path = Plugins/README; sourceTree = "<group>"; };
+		8483500B141E3D070044E037 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; name = README; path = Plugins/README; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 		84834FE2141E3D070044E037 /* DECAF */ = {
 			isa = PBXGroup;
 			children = (
+				8467043B141EB46A00A19ED7 /* www */,
 				84834FEB141E3D070044E037 /* PhoneGap.framework */,
 				84834FED141E3D070044E037 /* Resources */,
 				84835006141E3D070044E037 /* Classes */,
@@ -287,6 +290,7 @@
 				84835001141E3D070044E037 /* Default@2x.png in Resources */,
 				84835003141E3D070044E037 /* Capture.bundle in Resources */,
 				84835005141E3D070044E037 /* PhoneGap.plist in Resources */,
+				8467043C141EB46A00A19ED7 /* www in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,7 +378,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -391,7 +395,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -449,6 +453,7 @@
 				84835010141E3D070044E037 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
