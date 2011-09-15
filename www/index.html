@@ -6,14 +6,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-	<link rel="stylesheet" media="screen" href="stylesheets/index.css" type="text/css">
+	<link rel="stylesheet" media="screen" href="stylesheets/reset.css" type="text/css">
 	<link rel="stylesheet" media="screen" href="stylesheets/jqtouch.css" type="text/css">
 	<link rel="stylesheet" media="screen" href="stylesheets/themes/apple/theme.css" type="text/css">
+	<link rel="stylesheet" media="screen" href="stylesheets/index.css" type="text/css">
 	<!-- iPad/iPhone specific css below, add after your main css >
 	<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />
 	<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="iphone.css" type="text/css" />
 	-->
 	<!-- If your application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here -->
+	<script src="javascripts/modernizr.js"></script>
 	<script src="javascripts/phonegap-1.0.0.js"></script>
 	<script src="javascripts/jquery-1.4.2.min.js"></script>
 	<script src="javascripts/jqtouch.js"></script>
@@ -78,46 +80,140 @@
 						}
 					}, 'html');
 			});
+
+			$("#ccUsers__username").keyup(function(event) {
+				if (event.keyCode == 13) {
+					$("#slbtn").click();
+				}
+			});
+
+			$("#ccUsers__password").keyup(function(event) {
+				if (event.keyCode == 13) {
+					$("#slbtn").click();
+				}
+			});
+
+			var currentDate = new Date();
+
+			$("#copyright").append(currentDate.getFullYear());
 		});
 	</script>
 </head>
 <body onload="onBodyLoad()">
 	<div id="jqt">
-		<div id="login" class="current page">
-			<h1>DECAF</h2>
+		<!--<div id="login" class="current page">-->
+		<div id="login">
+			<h1 class="logo"><img src="images/decaf-logo-placeholder.png" alt="DECAF"></h1>
 			<form name="aform" id="aform" action="#" method="post" enctype="multipart/form-data" data-ajax="false" />
 				<input type="hidden" name="current_page" id="current_page" value="" />
 				<input type="hidden" name="next_page" id="next_page" value="" />
 				<input type="hidden" name="easter_egg" id="easter_egg" value="0" />
 				<input type="hidden" name="button_name" id="button_name" value="login" />
-				<input type="text" name="ccUsers__username" id="ccUsers__username" value="" />
-				<input type="password" name="ccUsers__password" id="ccUsers__password" value=""/>
-				<!--<input type="button" name="slbtn" id="slbtn" value="Start Course" onclick="$ ( 'form#aform' ).attr ( 'action', 'http://bkcert.com/course/' ).attr ( 'onsubmit', '' ); $ ( 'form#aform' ).submit ( ); return false;">-->
-				<input type="button" name="slbtn" id="slbtn" value="Log In" />
+				<p>
+					<label for="ccUsers__username">Username:</label><br />
+					<input type="text" name="ccUsers__username" id="ccUsers__username" autocomplete="off" autocorrect="off" value="" />
+				</p>
+				<p>
+					<label for="ccUsers__password">Password:</label><br />
+					<input type="password" name="ccUsers__password" id="ccUsers__password" value=""/>
+				</p>
+				<p>
+					<input type="button" name="slbtn" id="slbtn" value="Log In" />
+				</p>
+				<p>If you have not signed up as an attorney we encourage you to visit <a href="https://www.bkcert.com/attorney/register.php">bkcert.com</a> or call <a href="tel:877-332-2366">877.332.2366</a>.
 			</form>
 		</div>
-		<div id="main-menu">
-			<nav id="main-nav">
-				<ul>
-					<li><a href="#view-clients">View Clients</a></li>
-					<li><a href="#enroll-clients">Enroll Clients</a></li>
-				</ul>
-			</nav>
+		<div id="home" class="current">
+			<div class="toolbar">
+				<h1>DECAF</h1>
+				<a id="settings-button" class="button slideup" href="#settings">Settings</a>
+			</div>
+			<ul class="rounded">
+				<li class="arrow"><a href="#view-clients">View Clients</a></li>
+				<li class="arrow"><a href="#enroll-client">Enroll Client</a></li>
+			</ul>
 		</div>
 		<div id="view-clients">
-			<nav class="top-nav">
-				<ul>
-					<li><a href="#main-menu">Home</a></li>
-				</ul>
-			</nav>
-		</div>
-		<div id="enroll-clients">
+			<div class="toolbar">
+				<h1>View Clients</h1>
+				<a class="back" href="#">Back</a>
+			</div>
+			<p>List of clients will go here.</p>
 		</div>
 		<div id="enroll-client">
+			<div class="toolbar">
+				<h1>Enroll Client</h1>
+				<a class="back" href="#">Back</a>
+			</div>
+			<form>
+				<input type="hidden" name="current_page" id="current_page" value="" />
+				<input type="hidden" name="next_page" id="next_page" value="" />
+				<input type="hidden" name="easter_egg" id="easter_egg" value="0" />
+				<input type="hidden" name="button_name" id="button_name" value="register" />
+				<h2>Personal Information</h2>
+				<ul class="edit rounded">
+					<li>
+						<select name="title1" id="title1" placeholder="Title">
+							<option value="Mr.">Mr.</option>
+							<option value="Mrs.">Mrs.</option>
+							<option value="Ms.">Ms.</option>
+							<option value="Miss">Miss</option>
+							<option value="Dr.">Dr.</option>
+						</select>
+					</li>
+					<li><input type="text" name="firstName" id="firstName" placeholder="First Name" autocomplete="off" autocorrect="off" /></li>
+					<li><input type="text" name="middleName" id="middleName" maxlength="1" placeholder="Middle Initial" autocomplete="off" autocorrect="off" /></li>
+					<li><input type="text" name="lastName" id="lastName" placeholder="Last Name" autocomplete="off" autocorrect="off" /></li>
+					<li>SSN</li>
+					<li>EIN</li>
+				</ul>
+				<h2>Language Prefence</h2>
+				<ul class="edit rounded">
+					<li>
+						<select name="ccPrefs__lang" id="ccPrefs__lang" placeholder="Language">
+							<option value="en">English</option>
+							<option value="sp">Spanish</option>
+						</select>
+					</li>
+				</ul>
+				<h2>Course Registration</h2>
+				<ul class="edit rounded">
+					<input type="hidden" name="course1" id="course1" value="0" />
+					<input type="hidden" name="course2" id="course2" value="0" />
+					<li><input type="checkbox" name="_course1" id="_course1" value="on" title="Credit Counseling" /></li>
+					<li><input type="checkbox" name="_course2" id="_course1" value="on" title="Debtor Education" /></li>
+				</ul>
+				<h2>Account Information</h2>
+				<ul class="edit rounded">
+					<li><input type="text" name="username" id="username" placeholder="Username" autocomplete="off" autocorrect="off" /></li>
+					<li><input type="password" name="password" id="password" placeholder="Password" /></li>
+					<li><input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" /></li>
+				</ul>
+				<ul class="individual">
+					<li><input type="button" name="button_register_4" id="button_register_4" value="Register" /></li>
+				</ul>
+			</form>
+			<p>Note: You do NOT need to register joint filers separately. Spouse information will be entered while taking the course.</p>
 		</div>
 		<div id="enrollment-verification">
+			<h1>Enroll Client</h1>
+			<a class="back" href="#home">Back</a>
+			<p>Client enrollment form verification.</p>
 		</div>
 		<div id="settings">
+			<div class="toolbar">
+				<h1>Settings</h1>
+				<a class="back" href="#">Back</a>
+				<a id="about-button" class="button slideup" href="#about">About</a>
+			</div>
+			<p>Settings will go here.</p>
+		</div>
+		<div id="about">
+			<p><img src="images/decaf-logo-placeholder.png" alt="DECAF"></p>
+			<p><strong>DECAF iPhone App</strong><br />Version 0.0.2 alpha<br />Created by <a href="http://mojomedialabs.com/">Mojo Media Labs</a></p>
+			<p><em>Debt Education &amp; Certification Foundation (DECAF) provides credit counseling certificates as required before filing for bankruptcy and Debtor Education courses to be completed after filing.</em></p>
+			<p><a href="https://www.bkcert.com/index.php">Debt Educatin &amp; Certification Foundation</a><br/><span id="copyright">&copy; 2006-<span></p>
+			<p><br /><a href="#" class="grayButton goback">Close</a></p>
 		</div>
 	</div>
 </body>
