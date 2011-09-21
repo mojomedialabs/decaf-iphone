@@ -54,7 +54,23 @@
 		for more details -jm */
 		function onDeviceReady()
 		{
+			var username = localStorage.getItem("decaf_username");
 
+			var password = localStorage.getItem("decaf_password");
+
+			if (username && password) {
+				alert(username);
+
+				alert(password);
+
+				$("#ccUsers_username").text(username.toString());
+
+				$("#ccUsers_password").text(password.toString());
+
+				alert($("#ccUsers_username").val());
+
+				alert($("#ccUsers_password").val());
+			}
 		}
 
 		$(function() {
@@ -65,7 +81,6 @@
 
 				var jqxhr = $.post("https://www.bkcert.com/login/login.php", $("form#aform").serialize(),
 					function(data, textStatus, jqXHR) {
-
 						//alert("data: " + data + "\n" + "textStatus: " + textStatus + " \n" + "jqXHR: " + jqXHR);
 						var result = $(".error", $(data));
 
@@ -76,9 +91,17 @@
 						} else {
 							alert("Welcome back!");
 
-							jQT.goTo("#main-menu", "flip");
+							localStorage.setItem("decaf_username", $("#ccUsers__username").val());
+
+							alert(localStorage.getItem("decaf_username"));
+
+							localStorage.setItem("decaf_password", $("#ccUsers__password").val());
+
+							alert(localStorage.getItem("decaf_password"));
+
+							jQT.goTo("#home", "flip");
 						}
-					}, 'html');
+				}, 'html');
 			});
 
 			$("#ccUsers__username").keyup(function(event) {
@@ -101,8 +124,7 @@
 </head>
 <body onload="onBodyLoad()">
 	<div id="jqt">
-		<!--<div id="login" class="current page">-->
-		<div id="login">
+		<div id="login" class="current">
 			<h1 class="logo"><img src="images/decaf-logo-placeholder.png" alt="DECAF"></h1>
 			<form name="aform" id="aform" action="#" method="post" enctype="multipart/form-data" data-ajax="false" />
 				<input type="hidden" name="current_page" id="current_page" value="" />
@@ -123,10 +145,11 @@
 				<p>If you have not signed up as an attorney we encourage you to visit <a href="https://www.bkcert.com/attorney/register.php">bkcert.com</a> or call <a href="tel:877-332-2366">877.332.2366</a>.
 			</form>
 		</div>
-		<div id="home" class="current">
+		<div id="home">
 			<div class="toolbar">
 				<h1>DECAF</h1>
 				<a id="settings-button" class="button slideup" href="#settings">Settings</a>
+				<a id="logout-button" class="button" href="#logout">Logout</a>
 			</div>
 			<ul class="rounded">
 				<li class="arrow"><a href="#view-clients">View Clients</a></li>
