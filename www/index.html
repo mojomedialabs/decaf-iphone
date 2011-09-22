@@ -6,10 +6,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-	<link rel="stylesheet" media="screen" href="stylesheets/reset.css" type="text/css">
-	<link rel="stylesheet" media="screen" href="stylesheets/jqtouch.css" type="text/css">
-	<link rel="stylesheet" media="screen" href="stylesheets/themes/apple/theme.css" type="text/css">
-	<link rel="stylesheet" media="screen" href="stylesheets/index.css" type="text/css">
+	<link rel="stylesheet" media="screen" href="stylesheets/reset.css" type="text/css" />
+	<link rel="stylesheet" media="screen" href="stylesheets/jqtouch.css" type="text/css" />
+	<link rel="stylesheet" media="screen" href="stylesheets/themes/apple/theme.css" type="text/css" />
+	<link rel="stylesheet" media="screen" href="stylesheets/index.css" type="text/css" />
 	<!-- iPad/iPhone specific css below, add after your main css >
 	<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />
 	<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="iphone.css" type="text/css" />
@@ -20,6 +20,8 @@
 	<script src="javascripts/jquery-1.4.2.min.js"></script>
 	<script src="javascripts/jqtouch.js"></script>
 	<script>
+		"use strict;"
+
 		var jQT = new $.jQTouch( {
 			preloadImages: []
 		});
@@ -54,22 +56,20 @@
 		for more details -jm */
 		function onDeviceReady()
 		{
-			var username = localStorage.getItem("decaf_username");
+			var rememberMe = localStorage.getItem("decaf_remember_me");
 
-			var password = localStorage.getItem("decaf_password");
+			if (rememberMe) {
+				var username = localStorage.getItem("decaf_username");
 
-			if (username && password) {
-				alert(username);
+				var password = localStorage.getItem("decaf_password");
 
-				alert(password);
+				$("#ccUsers__username").val(username);
 
-				$("#ccUsers_username").text(username.toString());
+				$("#ccUsers__password").val(password);
 
-				$("#ccUsers_password").text(password.toString());
-
-				alert($("#ccUsers_username").val());
-
-				alert($("#ccUsers_password").val());
+				$("#slbtn").click();
+			} else {
+				localStorage.clear();
 			}
 		}
 
@@ -89,29 +89,29 @@
 
 							alert("Login failed! Please try again.");
 						} else {
-							alert("Welcome back!");
+							if ($("#remember_me").is(":checked")) {
+								localStorage.setItem("decaf_username", $("#ccUsers__username").val());
 
-							localStorage.setItem("decaf_username", $("#ccUsers__username").val());
+								localStorage.setItem("decaf_password", $("#ccUsers__password").val());
 
-							alert(localStorage.getItem("decaf_username"));
+								localStorage.setItem("decaf_remember_me", true);
+							} else {
+								localStorage.clear();
+							}
 
-							localStorage.setItem("decaf_password", $("#ccUsers__password").val());
-
-							alert(localStorage.getItem("decaf_password"));
-
-							jQT.goTo("#home", "flip");
+							jQT.goTo("#home", "slideleft");
 						}
 				}, 'html');
 			});
 
 			$("#ccUsers__username").keyup(function(event) {
-				if (event.keyCode == 13) {
+				if (event.keyCode === 13) {
 					$("#slbtn").click();
 				}
 			});
 
 			$("#ccUsers__password").keyup(function(event) {
-				if (event.keyCode == 13) {
+				if (event.keyCode === 13) {
 					$("#slbtn").click();
 				}
 			});
@@ -125,31 +125,25 @@
 <body onload="onBodyLoad()">
 	<div id="jqt">
 		<div id="login" class="current">
-			<h1 class="logo"><img src="images/decaf-logo-placeholder.png" alt="DECAF"></h1>
-			<form name="aform" id="aform" action="#" method="post" enctype="multipart/form-data" data-ajax="false" />
+			<h1 class="logo"><img src="images/decaf-logo-placeholder.png"  alt="DECAF" /></h1>
+			<form name="aform" id="aform" action="#" method="post" enctype="multipart/form-data" data-ajax="false">
 				<input type="hidden" name="current_page" id="current_page" value="" />
 				<input type="hidden" name="next_page" id="next_page" value="" />
 				<input type="hidden" name="easter_egg" id="easter_egg" value="0" />
 				<input type="hidden" name="button_name" id="button_name" value="login" />
-				<p>
-					<label for="ccUsers__username">Username:</label><br />
-					<input type="text" name="ccUsers__username" id="ccUsers__username" autocomplete="off" autocorrect="off" value="" />
-				</p>
-				<p>
-					<label for="ccUsers__password">Password:</label><br />
-					<input type="password" name="ccUsers__password" id="ccUsers__password" value=""/>
-				</p>
-				<p>
-					<input type="button" name="slbtn" id="slbtn" value="Log In" />
-				</p>
-				<p>If you have not signed up as an attorney we encourage you to visit <a href="https://www.bkcert.com/attorney/register.php">bkcert.com</a> or call <a href="tel:877-332-2366">877.332.2366</a>.
+				<ul class="edit rounded">
+					<li><input type="text" name="ccUsers__username" id="ccUsers__username" placeholder="Username" autocomplete="off" autocorrect="off" value="" /></li>
+					<li><input type="password" name="ccUsers__password" id="ccUsers__password" placeholder="Password" value=""/></li>
+					<li><input type="checkbox" name="remember_me" id="remember_me" value="remember" title="Remember Me">
+				</ul>
+				<div style="margin-bottom: 30px; text-align: center;"><input type="button" name="slbtn" id="slbtn" value="Log In" /></div>
+				<div class="info">If you have not signed up as an attorney we encourage you to visit <a href="https://www.bkcert.com/attorney/register.php">bkcert.com</a> or call <a href="tel:877-332-2366">877.332.2366</a>.</div>
 			</form>
 		</div>
 		<div id="home">
 			<div class="toolbar">
 				<h1>DECAF</h1>
 				<a id="settings-button" class="button slideup" href="#settings">Settings</a>
-				<a id="logout-button" class="button" href="#logout">Logout</a>
 			</div>
 			<ul class="rounded">
 				<li class="arrow"><a href="#view-clients">View Clients</a></li>
@@ -232,10 +226,10 @@
 			<p>Settings will go here.</p>
 		</div>
 		<div id="about">
-			<p><img src="images/decaf-logo-placeholder.png" alt="DECAF"></p>
+			<p><img src="images/decaf-logo-placeholder.png" alt="DECAF" /></p>
 			<p><strong>DECAF iPhone App</strong><br />Version 0.0.2 alpha<br />Created by <a href="http://mojomedialabs.com/">Mojo Media Labs</a></p>
 			<p><em>Debt Education &amp; Certification Foundation (DECAF) provides credit counseling certificates as required before filing for bankruptcy and Debtor Education courses to be completed after filing.</em></p>
-			<p><a href="https://www.bkcert.com/index.php">Debt Educatin &amp; Certification Foundation</a><br/><span id="copyright">&copy; 2006-<span></p>
+			<p><a href="https://www.bkcert.com/index.php">Debt Educatin &amp; Certification Foundation</a><br/><span id="copyright">&copy; 2006-</span></p>
 			<p><br /><a href="#" class="grayButton goback">Close</a></p>
 		</div>
 	</div>
