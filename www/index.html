@@ -15,6 +15,7 @@
 	<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="iphone.css" type="text/css" />
 	-->
 	<!-- If your application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here -->
+	<!--<script src="javascripts/sugar-0.9.5.min.js"></script>-->
 	<script src="javascripts/modernizr.js"></script>
 	<script src="javascripts/phonegap-1.0.0.js"></script>
 	<script src="javascripts/jquery-1.4.2.min.js"></script>
@@ -87,7 +88,7 @@
 						if (result.length) {
 							$("#slbtn").attr("disabled", false);
 
-							alert("Login failed! Please try again.");
+							navigator.notification.alert("Login failed! Please try again.", null, "Error!", "Retry");
 						} else {
 							if ($("#remember_me").is(":checked")) {
 								localStorage.setItem("decaf_username", $("#ccUsers__username").val());
@@ -98,6 +99,8 @@
 							} else {
 								localStorage.clear();
 							}
+
+							getClients();
 
 							jQT.goTo("#home", "slideleft");
 						}
@@ -120,6 +123,29 @@
 
 			$("#copyright").append(currentDate.getFullYear());
 		});
+
+		function client() {
+			this.firstName = "";
+			this.lastName = "";
+			this.SSN = "";
+			this.dateRegistered = new Date();
+			this.course1 = "";
+			this.course2 = "";
+		}
+
+		function getClients() {
+			var jqxhr = $.get("https://www.bkcert.com/attorney/view-clients.php", null,
+				function(data, textStatus, jqXHR) {
+					//alert("data: " + data + "\n" + "textStatus: " + textStatus + " \n" + "jqXHR: " + jqXHR);
+					var result = $("table.listview", $(data));
+
+					if (result.length) {
+						$("#clients").html(result);
+					} else {
+						navigator.notification.alert("Error retrieving client list!", null, "Error!", "OK");
+					}
+			}, 'html');
+		}
 	</script>
 </head>
 <body onload="onBodyLoad()">
@@ -134,9 +160,9 @@
 				<ul class="edit rounded">
 					<li><input type="text" name="ccUsers__username" id="ccUsers__username" placeholder="Username" autocomplete="off" autocorrect="off" value="" /></li>
 					<li><input type="password" name="ccUsers__password" id="ccUsers__password" placeholder="Password" value=""/></li>
-					<li><input type="checkbox" name="remember_me" id="remember_me" value="remember" title="Remember Me">
+					<li><input type="checkbox" name="remember_me" id="remember_me" value="remember" checked="checked" title="Remember Me">
 				</ul>
-				<div style="margin-bottom: 30px; text-align: center;"><input type="button" name="slbtn" id="slbtn" value="Log In" /></div>
+				<div style="margin-bottom: 37px; text-align: center;"><input type="button" name="slbtn" id="slbtn" value="Log In" /></div>
 				<div class="info">If you have not signed up as an attorney we encourage you to visit <a href="https://www.bkcert.com/attorney/register.php">bkcert.com</a> or call <a href="tel:877-332-2366">877.332.2366</a>.</div>
 			</form>
 		</div>
@@ -155,7 +181,8 @@
 				<h1>View Clients</h1>
 				<a class="back" href="#">Back</a>
 			</div>
-			<p>List of clients will go here.</p>
+			<div id="clients">
+			</div>
 		</div>
 		<div id="enroll-client">
 			<div class="toolbar">
