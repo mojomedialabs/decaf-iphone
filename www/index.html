@@ -15,7 +15,7 @@
 	<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="iphone.css" type="text/css" />
 	-->
 	<!-- If your application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here -->
-	<!--<script src="javascripts/sugar-0.9.5.min.js"></script>-->
+	<script src="javascripts/sugar-0.9.5.min.js"></script>
 	<script src="javascripts/modernizr.js"></script>
 	<script src="javascripts/phonegap-1.0.0.js"></script>
 	<script src="javascripts/jquery-1.4.2.min.js"></script>
@@ -60,19 +60,18 @@
 			var rememberMe = localStorage.getItem("decaf_remember_me");
 
 			if (rememberMe) {
-				var username = localStorage.getItem("decaf_username");
+				$("#ccUsers__username").val(localStorage.getItem("decaf_username"));
 
-				var password = localStorage.getItem("decaf_password");
-
-				$("#ccUsers__username").val(username);
-
-				$("#ccUsers__password").val(password);
+				$("#ccUsers__password").val(localStorage.getItem("decaf_password"));
 
 				$("#slbtn").click();
 			} else {
 				localStorage.clear();
 			}
 		}
+
+		var userName = "";
+		var password = "";
 
 		$(function() {
 			$("#slbtn").click(function(event) {
@@ -90,6 +89,9 @@
 
 							navigator.notification.alert("Login failed! Please try again.", null, "Error!", "Retry");
 						} else {
+							userName = $("#ccUsers__username").val();
+							password = $("#ccUsers__password").val()
+
 							if ($("#remember_me").is(":checked")) {
 								localStorage.setItem("decaf_username", $("#ccUsers__username").val());
 
@@ -99,6 +101,8 @@
 							} else {
 								localStorage.clear();
 							}
+
+							getUserName();
 
 							getClients();
 
@@ -119,28 +123,433 @@
 				}
 			});
 
+			$("#update-clients").click(function() {
+				getClients();
+			});
+
+			$(".client-link").live("click", function() {
+				$("#client").empty();
+
+				clientID = $(this).attr("data-client-index");
+
+				$("#client").append("<h2>" + clients[clientID].firstName + " " + clients[clientID].lastName + "</h2");
+
+				$("#client").append("<ul class=\"rounded\"></ul>");
+
+				$("#client ul").append("<li>Course 1 Status: <strong>" + clients[clientID].course1 + "</strong></li>");
+
+				$("#client ul").append("<li>Course 2 Status: <strong>" + clients[clientID].course2 + "</strong></li>");
+
+				$("#client ul").append("<li>Date Registered: <strong>" + clients[clientID].dateRegistered + "</strong></li>");
+
+				jQT.goTo("#view-client", "slideleft");
+			});
+
+			$("#_ssn_0_0").forceInteger();
+			$("#_ssn_0_1").forceInteger();
+			$("#_ssn_0_2").forceInteger();
+			$("#_ssn_0_3").forceInteger();
+			$("#_ssn_0_4").forceInteger();
+
+			$("#_has_ssn_ssn").click(function(event) {
+				$("#_ssn_0_0").removeAttr("disabled");
+				$("#_ssn_0_1").removeAttr("disabled");
+				$("#_ssn_0_2").removeAttr("disabled");
+				$("#_ssn_0_3").val("");
+				$("#_ssn_0_3").attr("disabled", true);
+				$("#_ssn_0_4").val("");
+				$("#_ssn_0_4").attr("disabled", true);
+				$("#has_ssn").val("1");
+			});
+
+			$("#_has_ssn_ein").click(function(event) {
+				$("#_ssn_0_0").val("");
+				$("#_ssn_0_0").attr("disabled", true);
+				$("#_ssn_0_1").val("");
+				$("#_ssn_0_1").attr("disabled", true);
+				$("#_ssn_0_2").val("");
+				$("#_ssn_0_2").attr("disabled", true);
+				$("#_ssn_0_3").removeAttr("disabled");
+				$("#_ssn_0_4").removeAttr("disabled");
+				$("#has_ssn").val("0");
+			});
+
+			$("#button_register_4").click(function() {
+				event.preventDefault();
+
+				$("#button_register_4").attr("disabled", true);
+
+				if (!validateNotBlank($("#firstName"), "Client must have a first name.")) {
+					return false;
+				}
+
+				//if (!validateMinLength($("#firstName"), 1, "Client first name must be at least 1 character in length.")) {
+				//	return false;
+				//}
+
+				if (!validateNotBlank($("#lastName"), "Client must have a last name.")) {
+					return false;
+				}
+
+				//if (!validateMinLength($("#lastName"), 1, "Client last name must be at least 1 character in length.")) {
+				//	return false;
+				//}
+
+				var SSN = "";
+
+				if ($("#has_ssn").val() === "1") {
+					if (!validateNotBlank($("#_ssn_0_0"), "SSN part 1 cannot be blank.")) {
+						return false;
+					}
+
+					if (!validateMinLength($("#_ssn_0_0"), 3, "SSN part 1 must be 3 digits.")) {
+						return false;
+					}
+
+					if (!validateNotBlank($("#_ssn_0_1"), "SSN part 2 cannot be blank.")) {
+						return false;
+					}
+
+					if (!validateMinLength($("#_ssn_0_1"), 2, "SSN part 2 must be 2 digits.")) {
+						return false;
+					}
+
+					if (!validateNotBlank($("#_ssn_0_2"), "SSN part cannot be blank.")) {
+						return false;
+					}
+
+					if (!validateMinLength($("#_ssn_0_2"), 4, "SSN part 3 must be 4 digits.")) {
+						return false;
+					}
+
+					if (!validateSSN($("#_ssn_0_0").val(), $("#_ssn_0_1").val(), $("#_ssn_0_2").val())) {
+						return false;
+					}
+
+					SSN = $("#_ssn_0_0").val() + $("#_ssn_0_1").val() + $("#_ssn_0_2").val();
+				} else {
+					if (!validateNotBlank($("#_ssn_0_3"), "Client must have a valid EIN.")) {
+						return false;
+					}
+
+					if (!validateMinLength($("#_ssn_0_3"), 2, "EIN part 1 must be 2 digits.")) {
+						return false;
+					}
+
+					if (!validateNotBlank($("#_ssn_0_4"), "Client must have a valid EIN.")) {
+						return false;
+					}
+
+					if (!validateMinLength($("#_ssn_0_4"), 7, "EIN part 2 must be 7 digits.")) {
+						return false;
+					}
+
+					SSN = $("#_ssn_0_3").val() + $("#_ssn_0_4").val();
+				}
+
+				$("#ss").val(SSN.substr(0,3));
+				$("#ss2").val(SSN.substr(3,2));
+				$("#ssn3").val(SSN.substr(5, 4));
+
+				if ($("#_course1").attr("checked")) {
+					$("#course1").val("1");
+				}
+
+				if ($("#_course2").attr("checked")) {
+					$("#course2").val("1");
+				}
+
+				if ($("#course1").val() === "0" && $("#course2").val() === "0") {
+					navigator.notification.alert("The client must be enrolled in at least one course.", function() {
+						$("html, body").animate({
+							scrollTop: $("#_course1").offset().top -30
+						}, 250);
+
+						$("#button_register_4").attr("disabled", false);
+					}, "Error!", "OK");
+
+					return false;
+				}
+
+				if (!validateNotBlank($("#username"), "Client must have a username.")) {
+					return false;
+				}
+
+				if (!validateUserName($("#username"))) {
+					return false;
+				}
+
+				if (!validateNotBlank($("#password"), "Client must have a password.")) {
+					return false;
+				}
+
+				if (!validateNotBlank($("#confirm_password"), "Password confirmation is blank.")) {
+					return false;
+				}
+
+				if ($("#password").val() !== $("#confirm_password").val()) {
+					navigator.notification.alert("The password confirmation does not match.", function() {
+						$("html, body").animate({
+							scrollTop: $("#password").offset().top -30
+						}, 250);
+
+						$("#button_register_4").attr("disabled", false);
+					}, "Error!", "OK");
+
+					return false;
+				}
+
+				var jqxhr = $.post("https://www.bkcert.com/attorney/_submit_and_redirect.php", $("form#enroll").serialize(),
+					function(data, textStatus, jqXHR) {
+						//alert("data: " + data + "\n" + "textStatus: " + textStatus + " \n" + "jqXHR: " + jqXHR);
+						var error = $("#body-content p.error", $(data)).text();
+
+						if (error.length > 0) {
+							$("#button_register_4").attr("disabled", false);
+
+							navigator.notification.alert(error, null, "Error!", "Retry");
+						}
+
+						var result = $("#body-content > h2", $(data)).text();
+
+						if (result !== "Client Registration Successful!") {
+							$("#button_register_4").attr("disabled", false);
+
+							navigator.notification.alert("Unknown error registering client.", null, "Error!", "Retry");
+						} else {
+							$("#button_register_4").attr("disabled", false);
+
+							jQT.goTo("#enrollment-verification", "slideleft");
+						}
+				}, 'html');
+			});
+
+			$("#settings-auto-login").click(function(event) {
+				if ($("#settings-auto-login").is(":checked")) {
+					localStorage.setItem("decaf_username", userName);
+
+					localStorage.setItem("decaf_password", password);
+
+					localStorage.setItem("decaf_remember_me", true);
+				} else {
+					localStorage.clear();
+				}
+			});
+
 			var currentDate = new Date();
 
 			$("#copyright").append(currentDate.getFullYear());
 		});
 
-		function client() {
+		function validateNotBlank(formField, errorMessage) {
+			if ($(formField).val() === "") {
+				navigator.notification.alert(errorMessage, function() {
+					$("html, body").animate({
+						scrollTop: $(formField).offset().top -30
+					}, 250);
+
+					$("#button_register_4").attr("disabled", false);
+				}, "Error!", "OK");
+
+				return false;
+			} else {
+				return true;
+			}
+		}
+
+		function validateMinLength(formField, minLength, errorMessage) {
+			if ($(formField).val().length < minLength) {
+				navigator.notification.alert(errorMessage, function() {
+					$("html, body").animate({
+						scrollTop: $(formField).offset().top -30
+					}, 250);
+
+					$("#button_register_4").attr("disabled", false);
+				}, "Error!", "OK");
+
+				return false;
+			} else {
+				return true;
+			}
+		}
+
+		function validateSSN(ssn1, ssn2, ssn3) {
+			var ssn = ssn1 + "-" + ssn2 + "-" + ssn3;
+		    var ssnFormat = /^([0-6]\d{2}|7[0-6]\d|77[0-2])([ \-]?)(\d{2})\2(\d{4})$/;
+
+		    if (!ssnFormat.test(ssn)) {
+				navigator.notification.alert("Invalid SSN format.", function() {
+					$("html, body").animate({
+						scrollTop: $("#_ssn_0_0").offset().top -30
+					}, 250);
+
+					$("#button_register_4").attr("disabled", false);
+				}, "Error!", "OK");
+
+				return false;
+			}
+
+			ssn = (ssn.split("-")).join("");
+
+		    if (ssn.substr(0, 3) === "000") {
+				navigator.notification.alert("Invalid SSN format.", function() {
+					$("html, body").animate({
+						scrollTop: $("#_ssn_0_0").offset().top -30
+					}, 250);
+
+					$("#button_register_4").attr("disabled", false);
+				}, "Error!", "OK");
+
+				return false;
+			}
+
+		    if (ssn.substr(3, 2) === "00") {
+				navigator.notification.alert("Invalid SSN format.", function() {
+					$("html, body").animate({
+						scrollTop: $("#_ssn_0_1").offset().top -30
+					}, 250);
+
+					$("#button_register_4").attr("disabled", false);
+				}, "Error!", "OK");
+
+				return false;
+			}
+
+		    if (ssn.substring(5, 4) === "0000") {
+				navigator.notification.alert("Invalid SSN format.", function() {
+					$("html, body").animate({
+						scrollTop: $("#_ssn_0_2").offset().top -30
+					}, 250);
+
+					$("#button_register_4").attr("disabled", false);
+				}, "Error!", "OK");
+
+				return false;
+			}
+
+		    return true;
+		}
+
+		function validateUserName(userName) {
+			if (!(/^[-a-zA-Z0-9@._]*$/.test(userName))) {
+				navigator.notification.alert("Invalid username format.", function() {
+					$("html, body").animate({
+						scrollTop: $("#username").offset().top - 30
+					}, 250);
+
+					$("#button_register_4").attr("disabled", false);
+				}, "Error!", "OK");
+
+				return false;
+			} else {
+				return true;
+			}
+		}
+
+		$.fn.forceInteger = function() {
+			return this.each(function() {
+				$(this).keydown(function(event) {
+					var key = event.which || event.keyCode;
+
+					if (event.shiftKey) {
+						alert(key);
+					}
+
+					if (!event.shiftKey && !event.altKey && !event.ctrlKey &&
+						//numbers
+						key >= 48 && key <= 57 ||
+						//numeric keypad
+						key >= 96 && key <= 105 ||
+						//backspace, tab, and enter
+						key == 8 || key == 9 || key == 13 ||
+						//home and end
+						key == 35 || key == 36 ||
+						//left and right arrows
+						key == 37 || key == 39 ||
+						//delete and insert
+						key == 46 || key == 45) {
+							//allow default
+					} else {
+						event.preventDefault();
+					}
+				});
+			});
+		};
+
+		function getUserName() {
+			var jqxhr = $.get("https://www.bkcert.com/attorney/view-clients.php", null,
+				function(data, textStatus, jqXHR) {
+					//alert("data: " + data + "\n" + "textStatus: " + textStatus + " \n" + "jqXHR: " + jqXHR);
+					var result = $("#top-bottom-01 > div > strong", $(data));
+
+					if (result.length) {
+						$("#user-name").append($(result).text().substr(0, $(result).text().indexOf(".") + 1));
+					} else {
+						navigator.notification.alert("Error retrieving user name!", null, "Error!", "OK");
+					}
+			}, 'html');
+		}
+
+		function Client() {
 			this.firstName = "";
 			this.lastName = "";
 			this.SSN = "";
-			this.dateRegistered = new Date();
+			this.dateRegistered = "";
 			this.course1 = "";
 			this.course2 = "";
 		}
+
+		var clients = new Array();
 
 		function getClients() {
 			var jqxhr = $.get("https://www.bkcert.com/attorney/view-clients.php", null,
 				function(data, textStatus, jqXHR) {
 					//alert("data: " + data + "\n" + "textStatus: " + textStatus + " \n" + "jqXHR: " + jqXHR);
-					var result = $("table.listview", $(data));
+					var result = $("table.listview tbody tr", $(data));
 
 					if (result.length) {
-						$("#clients").html(result);
+						clients.length = 0;
+
+						$(result).each(function(index, value) {
+							if (index === 0) {
+								return true;
+							}
+
+							client = new Client();
+
+							client.firstName = $(value).children().eq(0).text();
+							client.lastName = $(value).children().eq(1).text();
+							client.SSN = $(value).children().eq(2).text();
+							client.dateRegistered = $(value).children().eq(3).text();
+							client.course1 = $(value).children().eq(4).text();
+							client.course2 = $(value).children().eq(5).text();
+
+							clients.push(client);
+						});
+
+						if (clients.length) {
+							clients.sortBy(function(element) {
+								return element.lastName;
+							});
+
+							$("#clients").empty();
+
+							seperator = clients[0].lastName.substr(0, 1).toUpperCase();
+
+							$("#clients").append("<li class=\"sep\">" + seperator + "</li>");
+
+							clients.each(function(element, index, array) {
+								if (element.lastName.substr(0,1 ).toUpperCase() !== seperator) {
+									seperator = element.lastName.substr(0, 1).toUpperCase();
+
+									$("#clients").append("<li class=\"sep\">" + seperator + "</li>");
+								}
+
+								$("#clients").append("<li><a class=\"client-link\" data-client-index=\"" + index + "\" href=\"#\">" + element.lastName + ", <em>" + element.firstName + "</em></li>");
+							});
+						} else {
+							$("#clients").append("<li>No clients found.</li>")
+						}
 					} else {
 						navigator.notification.alert("Error retrieving client list!", null, "Error!", "OK");
 					}
@@ -151,7 +560,7 @@
 <body onload="onBodyLoad()">
 	<div id="jqt">
 		<div id="login" class="current">
-			<h1 class="logo"><img src="images/decaf-logo-placeholder.png"  alt="DECAF" /></h1>
+			<div class="logo"><img src="images/decaf-logo-placeholder.png"  alt="DECAF" /></div>
 			<form name="aform" id="aform" action="#" method="post" enctype="multipart/form-data" data-ajax="false">
 				<input type="hidden" name="current_page" id="current_page" value="" />
 				<input type="hidden" name="next_page" id="next_page" value="" />
@@ -162,8 +571,12 @@
 					<li><input type="password" name="ccUsers__password" id="ccUsers__password" placeholder="Password" value=""/></li>
 					<li><input type="checkbox" name="remember_me" id="remember_me" value="remember" checked="checked" title="Remember Me">
 				</ul>
-				<div style="margin-bottom: 37px; text-align: center;"><input type="button" name="slbtn" id="slbtn" value="Log In" /></div>
-				<div class="info">If you have not signed up as an attorney we encourage you to visit <a href="https://www.bkcert.com/attorney/register.php">bkcert.com</a> or call <a href="tel:877-332-2366">877.332.2366</a>.</div>
+				<div style="margin-bottom: 37px; text-align: center;">
+					<input type="button" name="slbtn" id="slbtn" value="Log In" />
+				</div>
+				<div class="info">
+					If you have not signed up as an attorney we encourage you to visit <a href="https://www.bkcert.com/attorney/register.php">bkcert.com</a> or call <a href="tel:877-332-2366">877.332.2366</a>.
+				</div>
 			</form>
 		</div>
 		<div id="home">
@@ -175,13 +588,23 @@
 				<li class="arrow"><a href="#view-clients">View Clients</a></li>
 				<li class="arrow"><a href="#enroll-client">Enroll Client</a></li>
 			</ul>
+			<div id="user-name" style="text-align: center;"></div>
 		</div>
 		<div id="view-clients">
 			<div class="toolbar">
 				<h1>View Clients</h1>
 				<a class="back" href="#">Back</a>
 			</div>
-			<div id="clients">
+			<ul id="clients" class="edgetoedge">
+			</ul>
+			<p><br /><a href="#" id="update-clients" class="grayButton">Update</a></p>
+		</div>
+		<div id="view-client">
+			<div class="toolbar">
+				<h1>View Client</h1>
+				<a class="back" href="#">Back</a>
+			</div>
+			<div id="client">
 			</div>
 		</div>
 		<div id="enroll-client">
@@ -189,11 +612,17 @@
 				<h1>Enroll Client</h1>
 				<a class="back" href="#">Back</a>
 			</div>
-			<form>
+			<form name="enroll" id="enroll" action="#" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="current_page" id="current_page" value="" />
 				<input type="hidden" name="next_page" id="next_page" value="" />
 				<input type="hidden" name="easter_egg" id="easter_egg" value="0" />
 				<input type="hidden" name="button_name" id="button_name" value="register" />
+				<input type="hidden" name="ss" id="ss" value="" />
+				<input type="hidden" name="ss2" id="ss2" value="" />
+				<input type="hidden" name="ss3" id="ss3" value="" />
+				<input type="hidden" name="has_ssn" id="has_ssn" value="1" />
+				<input type="hidden" name="course1" id="course1" value="0" />
+				<input type="hidden" name="course2" id="course2" value="0" />
 				<h2>Personal Information</h2>
 				<ul class="edit rounded">
 					<li>
@@ -208,8 +637,15 @@
 					<li><input type="text" name="firstName" id="firstName" placeholder="First Name" autocomplete="off" autocorrect="off" /></li>
 					<li><input type="text" name="middleName" id="middleName" maxlength="1" placeholder="Middle Initial" autocomplete="off" autocorrect="off" /></li>
 					<li><input type="text" name="lastName" id="lastName" placeholder="Last Name" autocomplete="off" autocorrect="off" /></li>
-					<li>SSN</li>
-					<li>EIN</li>
+					<li>
+						<input type="number" name="_ssn_0_0" id="_ssn_0_0" maxlength="3" /> - <input type="number" name="_ssn_0_1" id="_ssn_0_1" maxlength="2" /> - <input type="number" name="_ssn_0_2" id="_ssn_0_2" maxlength="4" />
+						<label for="_has_ssn_ssn"><input type="radio" name="_has_ssn" id="_has_ssn_ssn" checked="checked" value="1" /> SSN</label>
+					</li>
+					<li>
+						<input type="number" name="_ssn_0_3" id="_ssn_0_3" disabled="disabled" maxlength="2" /> -
+						<input type="number" name="_ssn_0_4" id="_ssn_0_4" disabled="disabled" maxlength="7" />
+						<label for="_has_ssn_ein"><input type="radio" name="_has_ssn" id="_has_ssn_ein" value="0" /> EIN</label>
+					</li>
 				</ul>
 				<h2>Language Prefence</h2>
 				<ul class="edit rounded">
@@ -222,8 +658,6 @@
 				</ul>
 				<h2>Course Registration</h2>
 				<ul class="edit rounded">
-					<input type="hidden" name="course1" id="course1" value="0" />
-					<input type="hidden" name="course2" id="course2" value="0" />
 					<li><input type="checkbox" name="_course1" id="_course1" value="on" title="Credit Counseling" /></li>
 					<li><input type="checkbox" name="_course2" id="_course1" value="on" title="Debtor Education" /></li>
 				</ul>
@@ -233,15 +667,17 @@
 					<li><input type="password" name="password" id="password" placeholder="Password" /></li>
 					<li><input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" /></li>
 				</ul>
-				<ul class="individual">
-					<li><input type="button" name="button_register_4" id="button_register_4" value="Register" /></li>
-				</ul>
+				<div style="text-align: center;">
+					<input type="button" name="button_register_4" id="button_register_4" value="Register" />
+				</div>
 			</form>
-			<p>Note: You do NOT need to register joint filers separately. Spouse information will be entered while taking the course.</p>
+			<div class="info" style="margin-top: 10px;">
+				Note: You do NOT need to register joint filers separately. Spouse information will be entered while taking the course.
+			</div>
 		</div>
 		<div id="enrollment-verification">
 			<h1>Enroll Client</h1>
-			<a class="back" href="#home">Back</a>
+			<a href="#home">Home</a>
 			<p>Client enrollment form verification.</p>
 		</div>
 		<div id="settings">
@@ -250,13 +686,17 @@
 				<a class="back" href="#">Back</a>
 				<a id="about-button" class="button slideup" href="#about">About</a>
 			</div>
-			<p>Settings will go here.</p>
+			<form>
+				<ul class="edit rounded">
+					<li>Automatic Login <span class="toggle"><input type="checkbox" name="settings-auto-login" id="settings-auto-login" /></span></li>
+				</ul>
+			</form>
 		</div>
 		<div id="about">
-			<p><img src="images/decaf-logo-placeholder.png" alt="DECAF" /></p>
+			<div class="logo"><img src="images/decaf-logo-placeholder.png"  alt="DECAF" /></div>
 			<p><strong>DECAF iPhone App</strong><br />Version 0.0.2 alpha<br />Created by <a href="http://mojomedialabs.com/">Mojo Media Labs</a></p>
 			<p><em>Debt Education &amp; Certification Foundation (DECAF) provides credit counseling certificates as required before filing for bankruptcy and Debtor Education courses to be completed after filing.</em></p>
-			<p><a href="https://www.bkcert.com/index.php">Debt Educatin &amp; Certification Foundation</a><br/><span id="copyright">&copy; 2006-</span></p>
+			<p><a href="https://www.bkcert.com/index.php" rel="external">Debt Educatin &amp; Certification Foundation</a><br/><span id="copyright">&copy; 2006-</span></p>
 			<p><br /><a href="#" class="grayButton goback">Close</a></p>
 		</div>
 	</div>

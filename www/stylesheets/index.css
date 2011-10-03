@@ -1,5 +1,35 @@
 @charset "utf-8";
 
+body {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+}
+
+.logo {
+    margin: 0 auto;
+    text-align: center;
+    width: 300px;
+}
+
+#_ssn_0_0 {
+    width: 60px !important;
+}
+
+#_ssn_0_1 {
+    width: 40px !important;
+}
+
+#_ssn_0_2 {
+    width: 80px !important;
+}
+
+#_ssn_0_3 {
+    width: 40px !important;
+}
+
+#_ssn_0_4 {
+    width: 140px !important;
+}
+
 div#jqt #about {
     padding: 60px 10px 0 10px;
     text-shadow: rgba(255, 255, 255, 0.3) 0px -1px 0;
