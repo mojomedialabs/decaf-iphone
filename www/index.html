@@ -275,7 +275,7 @@
 					return false;
 				}
 
-				if (!validateUserName($("#username"))) {
+				if (!validateUserName($("#username").val())) {
 					return false;
 				}
 
@@ -299,7 +299,7 @@
 					return false;
 				}
 
-				var jqxhr = $.post("https://www.bkcert.com/attorney/_submit_and_redirect.php", $("form#enroll").serialize(),
+				var jqxhr = $.post("https://www.bkcert.com/attorney/client-register.php", $("form#enroll").serialize(),
 					function(data, textStatus, jqXHR) {
 						//alert("data: " + data + "\n" + "textStatus: " + textStatus + " \n" + "jqXHR: " + jqXHR);
 						var error = $("#body-content p.error", $(data)).text();
@@ -317,11 +317,29 @@
 
 							navigator.notification.alert("Unknown error registering client.", null, "Error!", "Retry");
 						} else {
+							var clientHandoutURL = $(".handout-link a").attr("href");
+
+							var clientID = clientHandoutURL.substr(clientHandoutURL.indexOf("client_user_id=") + 15);
+
+							if (clientID.indexOf("&") !== -1) {
+								clientID = clientID.substr(0, clientID.indexOf("&"));
+							}
+
+							getClientHandout(clientID);
+
 							$("#button_register_4").attr("disabled", false);
 
-							jQT.goTo("#enrollment-verification", "slideleft");
+							jQT.goTo("#client-handout", "slideleft");
 						}
 				}, 'html');
+			});
+
+			$("#view-client-handout").click(function(event) {
+				var clientID = clients[$(this).attr("data-client-index")].clientID;
+
+				getClientHandout(clientID);
+
+				jQT.goTo("#client-handout", "slideleft");
 			});
 
 			$("#settings-auto-login").click(function(event) {
@@ -491,6 +509,7 @@
 		}
 
 		function Client() {
+			this.clientID = "";
 			this.firstName = "";
 			this.lastName = "";
 			this.SSN = "";
@@ -515,8 +534,11 @@
 								return true;
 							}
 
-							client = new Client();
+							var client = new Client();
 
+							var clientURL = $(value).children().eq(0).children().attr("href");
+
+							client.clientID = clientURL.substr(clientURL.indexOf("client_user_id") + 15);
 							client.firstName = $(value).children().eq(0).text();
 							client.lastName = $(value).children().eq(1).text();
 							client.SSN = $(value).children().eq(2).text();
@@ -546,6 +568,8 @@
 								}
 
 								$("#clients").append("<li><a class=\"client-link\" data-client-index=\"" + index + "\" href=\"#\">" + element.lastName + ", <em>" + element.firstName + "</em></li>");
+
+								$("#view-client-handout").attr("data-client-index", index);
 							});
 						} else {
 							$("#clients").append("<li>No clients found.</li>")
@@ -554,6 +578,83 @@
 						navigator.notification.alert("Error retrieving client list!", null, "Error!", "OK");
 					}
 			}, 'html');
+		}
+
+		function getClientHandout(clientID) {
+			var jqxhr = $.get("https://www.bkcert.com/forms/handouts/client-handout-both.php?client_user_id=" + clientID, null,
+				function(data, textStatus, jqXHR) {
+					//alert("data: " + data + "\n" + "textStatus: " + textStatus + " \n" + "jqXHR: " + jqXHR);
+					var result = $("body", $(data)).text();
+
+					if (result.indexOf("Error generating the client handout.") !== -1) {
+						navigator.notification.alert("Error generating the client handout!", null, "Error!", "OK");
+					} else {
+
+						var userName = $("#username", $(data)).val();
+
+						$("#handout-username").empty();
+
+						$("#handout-username").append(userName);
+
+						var password = $("#password", $(data)).val();
+
+						$("#handout-password").empty();
+
+						$("#handout-password").append(password);
+
+						$(".handout-user-id").empty();
+
+						$(".handout-user-id").append(clientID);
+
+						var course1ID = $("#course_id_c1", $(data)).val();
+
+						$("#handout-course-id1").empty();
+
+						$("#handout-course-id1").append(course1ID);
+
+						var course2ID = $("#course_id_c2", $(data)).val();
+
+						$("#handout-course-id1").empty();
+
+						$("#handout-course-id1").append(course2ID);
+
+						var attorneyCode = $("#attorney_code", $(data)).val();
+
+						$("#attorney_code").val(attorneyCode);
+
+						var bkCase = $("#bkcase", $(data)).val();
+
+						$("#bkcase").val(bkCase);
+
+						var clientName = $("#client_name", $(data)).val();
+
+						$("#client_name").val(clientName);
+
+						$("#course_id_c1").val(course1ID);
+
+						$("#course_id_c2").val(course2ID);
+
+						var firm = $("#firm", $(data)).val();
+
+						$("#firm").val(firm);
+
+						$("#email-client-password").val(password);
+
+						$("#randomz").val(Math.random() * 99999);
+
+						$("#user_id").val(clientID);
+
+						$("#username").val(userName);
+					}
+			}, 'html');
+		}
+
+		function emailClientHandout(clientID) {
+			var jqxhr = $.post("https://www.bkcert.com/forms/handouts/client-handout-both-email.php", $("form#email-client-handout").serialize(),
+				function(data, textStatus, jqXHR) {
+					//alert("data: " + data + "\n" + "textStatus: " + textStatus + " \n" + "jqXHR: " + jqXHR);
+					var error = $("#body-content p.error", $(data)).text();
+
 		}
 	</script>
 </head>
@@ -606,6 +707,7 @@
 			</div>
 			<div id="client">
 			</div>
+			<p><a href="#" id="view-client-handout" class="grayButton">Client Handout</a></p>
 		</div>
 		<div id="enroll-client">
 			<div class="toolbar">
@@ -659,7 +761,7 @@
 				<h2>Course Registration</h2>
 				<ul class="edit rounded">
 					<li><input type="checkbox" name="_course1" id="_course1" value="on" title="Credit Counseling" /></li>
-					<li><input type="checkbox" name="_course2" id="_course1" value="on" title="Debtor Education" /></li>
+					<li><input type="checkbox" name="_course2" id="_course2" value="on" title="Debtor Education" /></li>
 				</ul>
 				<h2>Account Information</h2>
 				<ul class="edit rounded">
@@ -675,10 +777,59 @@
 				Note: You do NOT need to register joint filers separately. Spouse information will be entered while taking the course.
 			</div>
 		</div>
-		<div id="enrollment-verification">
-			<h1>Enroll Client</h1>
-			<a href="#home">Home</a>
-			<p>Client enrollment form verification.</p>
+		<div id="client-handout">
+			<div class="toolbar">
+				<h1>Client Handout</h1>
+				<a href="#home">Home</a>
+			</div>
+			<div class="info">
+				<h2>Online Course Instructions:</h2>
+				<ol>
+					<li>Go to <a href="https://www.bkcert.com/course" rel="external">bkcert.com/course</a>.</li>
+					<li>
+						Enter the username and password below, and click on "Start Course"<br />
+						<strong>Username:</strong> <span id="handout-username"></span><br />
+						<strong>Password:</strong> <span id="handout-password"></span><br />
+					</li>
+					<li>After completion of the online course, call <a href="tel:1-866-859-7323">1-866-859-7323</a>.</li>
+				</ol>
+				<h2>Phone Course Instructions</h2>
+				<ol>
+					<li>Course 1: Before Filing - Credit Counseling
+						<ul>
+							<li><strong>Phone Number:</strong> <a href="tel:1-877-793-6795">1-877-793-6795</a></li>
+							<li><strong>Course ID:</strong> <span id="handout-course-id1"></span></li>
+							<li><strong>User ID:</strong> <span class="handout-user-id"></span></li>
+						</ul>
+					</li>
+					<li>Course 2: After Filing - Debtor Education
+						<ul>
+							<li><strong>Phone Number:</strong> <a href="tel:1-877-698-8028">1-877-698-8028</a></li>
+							<li><strong>Course ID:</strong> <span id="handout-course-id2"></span></li>
+							<li><strong>User ID:</strong> <span class="handout-user-id"></span></li>
+						</ul>
+					</li>
+					<li>After completing the course, you will be automatically transferred to a DECAF counselor to complete your session and have your certificate issued. If you are not automatically transferred, you can reach a DECAF counselor at <a href="tel:1-866-859-7323">1-866-859-7323</a>. Let them know you have completed the DECAF phone course.</li>
+				</ol>
+			</div>
+			<form id="email-client-handout">
+				<input type="hidden" name="attorney_code" id="attorney_code" value="" />
+				<input type="hidden" name="bkcase" id="bkcase" value="" />
+				<input type="hidden" name="client_name" id="client_name" value="" />
+				<input type="hidden" name="course_id_c1" id="course_id_c1" value="" />
+				<input type="hidden" name="course_id_c2" id="course_id_c2" value="" />
+				<input type="hidden" name="firm" id="" value="firm" />
+				<input type="hidden" name="password" id="email-client-password" value="" />
+				<input type="hidden" name="randomz" id="randomz" value="" />
+				<input type="hidden" name="user_id" id="user_id" value="" />
+				<input type="hidden" name="username" id="username" value="" />
+				<ul class="edit rounded">
+					<li><input type="text" name="email_to" id="email_to" placeholder="Email Address" autocomplete="off" autocorrect="off" /></li>
+				</ul>
+				<div style="text-align: center;">
+					<input type="button" name="email-submit" id="email-submit" value="Email to Client" />
+				</div>
+			</form>
 		</div>
 		<div id="settings">
 			<div class="toolbar">
@@ -694,7 +845,7 @@
 		</div>
 		<div id="about">
 			<div class="logo"><img src="images/decaf-logo-placeholder.png"  alt="DECAF" /></div>
-			<p><strong>DECAF iPhone App</strong><br />Version 0.0.2 alpha<br />Created by <a href="http://mojomedialabs.com/">Mojo Media Labs</a></p>
+			<p><strong>DECAF iPhone App</strong><br />Version 0.0.2 alpha<br />Created by <a href="http://mojomedialabs.com/" rel="external">Mojo Media Labs</a></p>
 			<p><em>Debt Education &amp; Certification Foundation (DECAF) provides credit counseling certificates as required before filing for bankruptcy and Debtor Education courses to be completed after filing.</em></p>
 			<p><a href="https://www.bkcert.com/index.php" rel="external">Debt Educatin &amp; Certification Foundation</a><br/><span id="copyright">&copy; 2006-</span></p>
 			<p><br /><a href="#" class="grayButton goback">Close</a></p>
