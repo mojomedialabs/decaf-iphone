@@ -1257,11 +1257,11 @@
 		<string>PrimaryDocumentVisibleCharacterRange</string>
 		<string>HideAllIssues</string>
 		<string>PrimaryDocumentSelectedCharacterRange</string>
-		<real>339438744.74326998</real>
+		<real>339446876.83180302</real>
 		<string>{1718, 1632}</string>
 		<false/>
-		<string>{3309, 0}</string>
-		<string>-webView:shouldStartLoadWithRequest:navigationType:</string>
+		<string>{2716, 0}</string>
+		<string>@implementation AppDelegate</string>
 		<string>Xcode.IDEKit.EditorDocument.SourceCode</string>
 		<dict>
 			<key>$class</key>
@@ -5908,9 +5908,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>339438744.740996</real>
+		<real>339446876.82735902</real>
 		<string>{1718, 1632}</string>
-		<string>{3309, 0}</string>
+		<string>{2716, 0}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -7367,7 +7367,7 @@
 				<integer>613</integer>
 			</dict>
 			<key>NS.time</key>
-			<real>339438717.27370101</real>
+			<real>339446800.488796</real>
 		</dict>
 		<dict>
 			<key>$classes</key>
@@ -7378,7 +7378,7 @@
 			<key>$classname</key>
 			<string>NSDate</string>
 		</dict>
-		<string>Today at 11:31 AM</string>
+		<string>Today at 1:46 PM</string>
 		<integer>234</integer>
 		<dict>
 			<key>$class</key>
