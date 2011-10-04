@@ -97,7 +97,7 @@
 {
     NSURL *url = [request URL];
 
-    if ([[url scheme] isEqualToString:@"http"] || [[url scheme] isEqualToString:@"https"])
+    if ([[url scheme] isEqualToString:@"http"] || [[url scheme] isEqualToString:@"https"] || [[url scheme] isEqualToString:@"tel"])
     {
         [[UIApplication sharedApplication] openURL:url];
 
