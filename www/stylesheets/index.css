@@ -12,6 +12,10 @@
     text-align: center;
 }
 
+.button-container {
+    margin: 10px;
+}
+
 #_ssn_0_0 {
     width: 60px !important;
 }

@@ -403,17 +403,17 @@ $(function() {
 		}, 'html');
 	});
 
-	$("#ccUsers__username").keyup(function(event) {
+	$("#ccUsers__username, #ccUsers__password").keyup(function(event) {
 		if (event.keyCode === 13) {
 			$("#slbtn").click();
 		}
 	});
 
-	$("#ccUsers__password").keyup(function(event) {
+	/*$("#ccUsers__password").keyup(function(event) {
 		if (event.keyCode === 13) {
 			$("#slbtn").click();
 		}
-	});
+	});*/
 
 	$("#update-clients").click(function() {
 		getClients();
@@ -639,6 +639,12 @@ $(function() {
 					getClients();
 				}
 		}, 'html');
+	});
+
+	$("#firstName, #middleName, #lastName, #_ssn_0_0, #_ssn_0_1, #_ssn_0_2, #_ssn_0_3, #_ssn_0_4, #username, #password, #confirm_password").keyup(function(event) {
+		if (event.keyCode === 13) {
+			$("#button_register_4").click();
+		}
 	});
 
 	$("#view-client-handout").click(function(event) {
