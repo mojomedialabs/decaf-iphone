@@ -586,17 +586,17 @@ $(function() {
 				var error = $("#body-content p.error", $(data)).text();
 
 				if (error.length > 0) {
-					$("#button_register_4").attr("disabled", false);
+					enableRegisterButton();
 
-					navigator.notification.alert(error, null, "Error!", "Retry");
+					navigator.notification.alert(error, null, "Error!", "OK");
 				}
 
 				var result = $("#body-content > h2", $(data)).text();
 
 				if (result !== "Client Registration Successful!") {
-					$("#button_register_4").attr("disabled", false);
+					enableRegisterButton();
 
-					navigator.notification.alert("Unknown error registering client.", null, "Error!", "Retry");
+					navigator.notification.alert("Unknown error registering client. Please try again.", null, "Error!", "OK");
 				} else {
 					var clientHandoutURL = $(".handout-link a", $(data)).attr("href");
 
@@ -608,7 +608,31 @@ $(function() {
 
 					getClientHandout(clientID);
 
-					$("#button_register_4").attr("disabled", false);
+					$("#ss").val("");
+                    $("#ss2").val("");
+                    $("#ss3").val("");
+                    $("#has_ssn").val("1");
+                    $("#course1").val("0");
+                    $("#course2").val("0");
+                    $("#title1").selectedIndex = 0;
+                    $("#firstName").val("");
+                    $("#middleName").val("");
+                    $("#lastName").val("");
+                    $("#_ssn_0_0").val("");
+                    $("#_ssn_0_1").val("");
+                    $("#_ssn_0_2").val("");
+                    $("#has_ssn_ssn").attr("checked", true);
+                    $("#_ssn_0_3").val("");
+                    $("#_ssn_0_4").val("");
+                    $("#has_ssn_ein").attr("checked", false);
+                    $("#ccPrefs__lang").selectedIndex = 0;
+                    $("#_course1").attr("checked", false);
+                    $("#_course2").attr("checked", false);
+                    $("#username").val("");
+                    $("#password").val("");
+                    $("#confirm_password").val("");
+
+					enableRegisterButton();
 
 					jQT.goTo("#client-handout", "slideleft");
 
