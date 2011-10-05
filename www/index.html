@@ -10,22 +10,19 @@
 	<link rel="stylesheet" media="screen" href="stylesheets/jqtouch.css" type="text/css" />
 	<link rel="stylesheet" media="screen" href="stylesheets/themes/apple/theme.css" type="text/css" />
 	<link rel="stylesheet" media="screen" href="stylesheets/index.css" type="text/css" />
-	<!-- iPad/iPhone specific css below, add after your main css >
-	<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />
-	<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="iphone.css" type="text/css" />
-	-->
-	<!-- If your application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here -->
 	<script src="javascripts/sugar-0.9.5.min.js"></script>
-	<script src="javascripts/modernizr.js"></script>
+	<!--<script src="javascripts/modernizr.js"></script>-->
 	<script src="javascripts/phonegap-1.0.0.js"></script>
 	<script src="javascripts/jquery-1.4.2.min.js"></script>
 	<script src="javascripts/jqtouch.js"></script>
 	<script src="javascripts/index.js"></script>
 </head>
-<body onload="onBodyLoad()">
+<body onload="onBodyLoad();">
 	<div id="jqt">
 		<div id="login" class="current">
-			<div class="logo"><img src="images/decaf-logo-placeholder.png"  alt="DECAF" /></div>
+			<div class="logo">
+				<img src="images/decaf-logo-placeholder.png"  alt="DECAF" />
+			</div>
 			<form name="aform" id="aform" action="#" method="post" enctype="multipart/form-data" data-ajax="false">
 				<input type="hidden" name="current_page" id="current_page" value="" />
 				<input type="hidden" name="next_page" id="next_page" value="" />
@@ -53,7 +50,7 @@
 				<li class="arrow"><a href="#view-clients">View Clients</a></li>
 				<li class="arrow"><a href="#enroll-client">Enroll Client</a></li>
 			</ul>
-			<div id="user-name" style="text-align: center;"></div>
+			<div id="user-name" class="info"></div>
 		</div>
 		<div id="view-clients">
 			<div class="toolbar">

@@ -39,36 +39,112 @@ function onBodyLoad()
 	document.addEventListener("deviceready", onDeviceReady, false);
 }
 
-function validateNotBlank(formField, errorMessage) {
-	if ($(formField).val() === "") {
-		navigator.notification.alert(errorMessage, function() {
-			$("html, body").animate({
-				scrollTop: $(formField).offset().top -30
-			}, 250);
+function alertAndScrollToField(formField, errorMessage, duration) {
+    if (duration === undefined) {
+        duration = 250;
+    }
 
-			$("#button_register_4").attr("disabled", false);
-		}, "Error!", "OK");
-
-		return false;
-	} else {
-		return true;
-	}
+    navigator.notification.alert(errorMessage, function() {
+		$("html, body").animate({ scrollTop: $(formField).offset().top - 30 }, duration);
+    }, "Error!", "OK");
 }
 
-function validateMinLength(formField, minLength, errorMessage) {
-	if ($(formField).val().length < minLength) {
-		navigator.notification.alert(errorMessage, function() {
-			$("html, body").animate({
-				scrollTop: $(formField).offset().top -30
-			}, 250);
+function validatePresenceOf(formField, errorMessage, falseCallback, trueCallback) {
+    if ($(formField).val().isBlank()) {
+        alertAndScrollToField(formField, errorMessage);
 
-			$("#button_register_4").attr("disabled", false);
-		}, "Error!", "OK");
+        if (falseCallback) {
+            falseCallback();
+        }
 
-		return false;
-	} else {
-		return true;
-	}
+        return false;
+    } else {
+        if (trueCallback) {
+            trueCallback();
+        }
+
+        return true;
+    }
+}
+
+function validateLengthOf(formField, errorMessage, minimum, maximum, falseCallback, trueCallback) {
+    if (minimum < 1) {
+        minimum = 1;
+    }
+
+    if ($(formField).val().length < minimum) {
+        alertAndScrollToField(formField, errorMessage);
+
+        if (falseCallback) {
+            falseCallback();
+        }
+
+        return false;
+    }
+
+    if (maximum) {
+        if (maximum < 1) {
+            maximum = 1;
+        }
+
+        if (minimum > maximum) {
+            var temp = minimum;
+            minimum = maximum;
+            maximum = temp;
+        }
+
+        if ($(formField).val().length > maximum) {
+            alertAndScrollToField(formField, errorMessage);
+
+            if (falseCallback) {
+                falseCallback();
+            }
+
+            return false;
+        }
+    }
+
+    if (trueCallback) {
+        trueCallback();
+    }
+
+    return true;
+}
+
+function validateFormatOf(formField, errorMessage, format, falseCallback, trueCallback) {
+    if (!format.test($(formField).val())) {
+        alertAndScrollToField(formField, errorMessage);
+
+        if (falseCallback) {
+            falseCallback();
+        }
+
+        return false;
+    } else {
+        if (trueCallback) {
+            trueCallback();
+        }
+
+        return true;
+    }
+}
+
+function validateConfirmationOf(formField1, formField2, errorMessage, falseCallback, trueCallback) {
+    if ($(formField1).val() !== $(formField2).val()) {
+        alertAndScrollToField(formField1, errorMessage);
+
+        if (falseCallback) {
+            falseCallback();
+        }
+
+        return false;
+    } else {
+        if (trueCallback) {
+            trueCallback();
+        }
+
+        return true;
+    }
 }
 
 function validateSSN(ssn1, ssn2, ssn3) {
@@ -128,26 +204,9 @@ function validateSSN(ssn1, ssn2, ssn3) {
     return true;
 }
 
-function validateUserName(userName) {
-	if (!(/^[a-zA-Z0-9@._]*$/.test(userName))) {
-		navigator.notification.alert("Invalid username format.", function() {
-			$("html, body").animate({
-				scrollTop: $("#username").offset().top - 30
-			}, 250);
-
-			$("#button_register_4").attr("disabled", false);
-		}, "Error!", "OK");
-
-		return false;
-	} else {
-		return true;
-	}
-}
-
 function getUserName() {
 	var jqxhr = $.get("https://www.bkcert.com/attorney/view-clients.php", null,
 		function(data, textStatus, jqXHR) {
-			//alert("data: " + data + "\n" + "textStatus: " + textStatus + " \n" + "jqXHR: " + jqXHR);
 			var result = $("#top-bottom-01 > div > strong", $(data));
 
 			if (result.length) {
@@ -158,11 +217,9 @@ function getUserName() {
 	}, 'html');
 }
 
-
 function getClients() {
 	var jqxhr = $.get("https://www.bkcert.com/attorney/view-clients.php", null,
 		function(data, textStatus, jqXHR) {
-			//alert("data: " + data + "\n" + "textStatus: " + textStatus + " \n" + "jqXHR: " + jqXHR);
 			var result = $("table.listview tbody tr", $(data));
 
 			if (result.length) {
@@ -220,7 +277,6 @@ function getClients() {
 function getClientHandout(clientID) {
 	var jqxhr = $.get("https://www.bkcert.com/forms/handouts/client-handout-both.php?client_user_id=" + clientID, null,
 		function(data, textStatus, jqXHR) {
-			//alert("data: " + data + "\n" + "textStatus: " + textStatus + " \n" + "jqXHR: " + jqXHR);
 			var result = $("body", $(data)).text();
 
 			if (result.indexOf("Error generating the client handout.") !== -1) {
@@ -318,7 +374,6 @@ $(function() {
 
 		var jqxhr = $.post("https://www.bkcert.com/login/login.php", $("form#aform").serialize(),
 			function(data, textStatus, jqXHR) {
-				//alert("data: " + data + "\n" + "textStatus: " + textStatus + " \n" + "jqXHR: " + jqXHR);
 				var result = $(".error", $(data));
 
 				if (result.length) {
@@ -418,77 +473,73 @@ $(function() {
 
 		$("#button_register_4").attr("disabled", true);
 
-		if (!validateNotBlank($("#firstName"), "Client must have a first name.")) {
+		var enableRegisterButton = function() {
+		    $("#button_register_4").attr("disabled", false);
+		}
+
+        if (!validatePresenceOf($("#firstName"), "Client must have a first name.", enableRegisterButton)) {
 			return false;
 		}
 
-		//if (!validateMinLength($("#firstName"), 1, "Client first name must be at least 1 character in length.")) {
-		//	return false;
-		//}
-
-		if (!validateNotBlank($("#lastName"), "Client must have a last name.")) {
+        if (!validatePresenceOf($("#lastName"), "Client must have a last name.", enableRegisterButton)) {
 			return false;
 		}
 
-		//if (!validateMinLength($("#lastName"), 1, "Client last name must be at least 1 character in length.")) {
-		//	return false;
-		//}
-
-		var SSN = "";
+		var ssn = "";
 
 		if ($("#has_ssn").val() === "1") {
-			if (!validateNotBlank($("#_ssn_0_0"), "SSN part 1 cannot be blank.")) {
+			if (!validatePresenceOf($("#_ssn_0_0"), "SSN part 1 cannot be blank.", enableRegisterButton)) {
+			    return false;
+			}
+
+			if (!validateLengthOf($("#_ssn_0_0"), "SSN part 1 must be 3 digits.", 3, 3, enableRegisterButton)) {
+			    return false;
+			}
+
+			if (!validatePresenceOf($("#_ssn_0_1"), "SSN part 2 cannot be blank.", enableRegisterButton)) {
 				return false;
 			}
 
-			if (!validateMinLength($("#_ssn_0_0"), 3, "SSN part 1 must be 3 digits.")) {
+			if (!validateLengthOf($("#_ssn_0_1"), "SSN part 2 must be 2 digits.", 2, 2, enableRegisterButton)) {
+			    return false;
+			}
+
+			if (!validatePresenceOf($("#_ssn_0_2"), "SSN part 3 cannot be blank.", enableRegisterButton)) {
 				return false;
 			}
 
-			if (!validateNotBlank($("#_ssn_0_1"), "SSN part 2 cannot be blank.")) {
-				return false;
-			}
-
-			if (!validateMinLength($("#_ssn_0_1"), 2, "SSN part 2 must be 2 digits.")) {
-				return false;
-			}
-
-			if (!validateNotBlank($("#_ssn_0_2"), "SSN part cannot be blank.")) {
-				return false;
-			}
-
-			if (!validateMinLength($("#_ssn_0_2"), 4, "SSN part 3 must be 4 digits.")) {
-				return false;
+			if (!validateLengthOf($("#_ssn_0_2"), "SSN part 3 must be 4 digits.", 4, 4, enableRegisterButton)) {
+			    return false;
 			}
 
 			if (!validateSSN($("#_ssn_0_0").val(), $("#_ssn_0_1").val(), $("#_ssn_0_2").val())) {
 				return false;
 			}
 
-			SSN = $("#_ssn_0_0").val() + $("#_ssn_0_1").val() + $("#_ssn_0_2").val();
+			ssn = $("#_ssn_0_0").val() + $("#_ssn_0_1").val() + $("#_ssn_0_2").val();
 		} else {
-			if (!validateNotBlank($("#_ssn_0_3"), "Client must have a valid EIN.")) {
+			if (!validatePresenceOf($("#_ssn_0_3"), "EIN part 1 cannot be blank.", enableRegisterButton)) {
 				return false;
 			}
 
-			if (!validateMinLength($("#_ssn_0_3"), 2, "EIN part 1 must be 2 digits.")) {
+			if (!validateLengthOf($("#_ssn_0_3"), "EIN part 1 must be 2 digits.", 2, 2, enableRegisterButton)) {
+			    return false;
+			}
+
+			if (!validatePresenceOf($("#_ssn_0_4"), "EIN part 2 cannot be blank.", enableRegisterButton)) {
 				return false;
 			}
 
-			if (!validateNotBlank($("#_ssn_0_4"), "Client must have a valid EIN.")) {
-				return false;
+			if (!validateLengthOf($("#_ssn_0_2"), "EIN part 2 must be 7 digits.", 7, 7, enableRegisterButton)) {
+			    return false;
 			}
 
-			if (!validateMinLength($("#_ssn_0_4"), 7, "EIN part 2 must be 7 digits.")) {
-				return false;
-			}
-
-			SSN = $("#_ssn_0_3").val() + $("#_ssn_0_4").val();
+			ssn = $("#_ssn_0_3").val() + $("#_ssn_0_4").val();
 		}
 
-		$("#ss").val(SSN.substr(0,3));
-		$("#ss2").val(SSN.substr(3,2));
-		$("#ssn3").val(SSN.substr(5, 4));
+		$("#ss").val(ssn.substr(0,3));
+		$("#ss2").val(ssn.substr(3,2));
+		$("#ssn3").val(ssn.substr(5, 4));
 
 		if ($("#_course1").attr("checked")) {
 			$("#course1").val("1");
@@ -510,38 +561,28 @@ $(function() {
 			return false;
 		}
 
-		if (!validateNotBlank($("#username"), "Client must have a username.")) {
+		if (!validatePresenceOf($("#username"), "Client must have a username.", enableRegisterButton)) {
 			return false;
 		}
 
-		if (!validateUserName($("#username").val())) {
+        if (!validateFormatOf($("#username"), "Client username can only consist of alphanumeric characters.", /^[a-zA-Z0-9@._]*$/, enableRegisterButton)) {
+            return false;
+        }
+
+		if (!validatePresenceOf($("#password"), "Client must have a password.", enableRegisterButton)) {
 			return false;
 		}
 
-		if (!validateNotBlank($("#password"), "Client must have a password.")) {
+		if (!validatePresenceOf($("#confirm_password"), "Password confirmation is blank.", enableRegisterButton)) {
 			return false;
 		}
 
-		if (!validateNotBlank($("#confirm_password"), "Password confirmation is blank.")) {
-			return false;
-		}
-
-		if ($("#password").val() !== $("#confirm_password").val()) {
-			navigator.notification.alert("The password confirmation does not match.", function() {
-				$("html, body").animate({
-					scrollTop: $("#password").offset().top -30
-				}, 250);
-
-				$("#button_register_4").attr("disabled", false);
-			}, "Error!", "OK");
-
-			return false;
+		if (!validateConfirmationOf($("#password"), $("#confirm_password"), "The password confirmation does not match.", enableRegisterButton)) {
+		    return false;
 		}
 
 		var jqxhr = $.post("https://www.bkcert.com/attorney/client-register.php", $("form#enroll").serialize(),
 			function(data, textStatus, jqXHR) {
-				//alert("data: " + data + "\n" + "textStatus: " + textStatus + " \n" + "jqXHR: " + jqXHR);
-
 				var error = $("#body-content p.error", $(data)).text();
 
 				if (error.length > 0) {
@@ -591,7 +632,6 @@ $(function() {
 
         var jqxhr = $.post("https://www.bkcert.com/forms/handouts/client-handout-both-email.php", $("form#email-client-handout").serialize(),
             function(data, textStatus, jqXHR) {
-                //alert("data: " + data + "\n" + "textStatus: " + textStatus + " \n" + "jqXHR: " + jqXHR);
                 if (data.indexOf("<strong>The instructional handout has been sent to:</strong>") === -1) {
                     navigator.notification.alert("Error sending email to client.", null, "Error!", "Retry");
                 }
@@ -616,4 +656,3 @@ $(function() {
 
 	$("#copyright").append(currentDate.getFullYear());
 });
-
