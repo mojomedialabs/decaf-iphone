@@ -123,7 +123,7 @@ body {
 
 #jqt .whiteButton.active, #jqt .grayButton.active, #jqt .redButton.active, #jqt .blueButton.active, #jqt .greenButton.active,
 #jqt .whiteButton:active, #jqt .grayButton:active, #jqt .redButton:active, #jqt .blueButton:active, #jqt .greenButton:active {
-    -webkit-border-image: url(img/activeButton.png) 0 12 0 12;
+	-webkit-border-image: url(img/whiteButton.png) 0 12 0 12;
 }
 
 #jqt .whiteButton {
@@ -213,7 +213,7 @@ body {
     display: block;
     padding: 12px 10px 12px 10px;
     margin: -10px;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.0);
 }
 
 #jqt ul li a.active {
@@ -700,7 +700,7 @@ body {
 }
 
 #jqt .toggle input[type="checkbox"] {
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.0);
     margin: 0;
     -webkit-border-radius: 5px;
     background: #fff url(img/on_off.png) 0 0 no-repeat;
@@ -727,7 +727,7 @@ body {
     text-shadow: rgba(255,255,255,.8) 0 1px 0;
     color: rgb(76, 86, 108);
     padding: 15px;
-    border-top: 1px solid rgba(76, 86, 108, .3);
+    border-top: 1px solid rgba(76,86,108,.3);
     font-weight: bold;
 }
 input[type='submit'] {

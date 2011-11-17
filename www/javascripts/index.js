@@ -19,8 +19,7 @@ function Client() {
 
 var clients = [];
 
-function onDeviceReady()
-{
+function onDeviceReady() {
 	var rememberMe = localStorage.getItem("decaf_remember_me");
 
 	if (rememberMe) {
@@ -34,9 +33,103 @@ function onDeviceReady()
 	}
 }
 
-function onBodyLoad()
-{
+function onBodyLoad() {
 	document.addEventListener("deviceready", onDeviceReady, false);
+}
+
+function resetLoginFormFields() {
+  $("#ccUsers__username").val("");
+	$("#ccUsers__password").val("");
+	$("#remember_me").val("remember");
+	$("#remember_me").attr("checked", true);
+}
+
+function resetEnrollClientFormFields() {
+  $("#ss").val("");
+  $("#ss2").val("");
+  $("#ss3").val("");
+  $("#has_ssn").val("1");
+  $("#course1").val("0");
+  $("#course2").val("0");
+  $("#title1").attr("selectedIndex", 0);
+  $("#firstName").val("");
+  $("#middleName").val("");
+  $("#lastName").val("");
+  $("#_has_ssn_ssn").val("1");
+  $("#_has_ssn_ssn").attr("checked", true);
+	$("#_ssn_0_0").val("");
+	$("#_ssn_0_0").attr("disabled", false);
+	$("#_ssn_0_1").val("");
+	$("#_ssn_0_1").attr("disabled", false);
+	$("#_ssn_0_2").val("");
+	$("#_ssn_0_2").attr("disabled", false);
+	$("#_has_ssn_ein").val("0");
+	$("#_has_ssn_ein").attr("checked", false);
+	$("#_ssn_0_3").val("");
+	$("#_ssn_0_3").attr("disabled", true);
+	$("#_ssn_0_4").val("");
+	$("#_ssn_0_4").attr("disabled", true);
+  $("#ccPrefs__lang").attr("selectedIndex", 0);
+  $("#_course1").val("on");
+  $("#_course1").attr("checked", false);
+  $("#_course1").val("on");
+  $("#_course2").attr("checked", false);
+  $("#username").val("");
+  $("#password").val("");
+  $("#confirm_password").val("");
+}
+
+function resetClientHandoutFormFields() {
+  $("#handout-username").empty();
+	$("#handout-password").empty();
+  $("#handout-course-id1").empty();
+  $(".handout-user-id").empty();
+  $("#handout-course-id2").empty();
+  $(".handout-user-id").empty();
+  $("#attorney_code").val("");
+  $("#bkcase").val("");
+  $("#client_name").val("");
+  $("#course_id_c1").val("");
+  $("#course_id_c2").val("");
+  $("#firm").val("");
+  $("#email-client-password").val("");
+  $("#randomz").val("");
+  $("#user_id").val("");
+  $("#email-client-username").val("");
+  $("#email_to").val("");
+}
+
+function resetAllFormValues() {
+  resetLoginFormFields();
+
+	$("#user-name").empty();
+
+	$("#client").empty();
+
+	resetEnrollClientFormFields();
+
+  $("#settings-remember-me").attr("checked", true);
+}
+
+function login() {
+
+}
+
+function logout() {
+  localStorage.clear();
+
+  var cookies = document.cookie.split(";");
+
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i];
+    var equalPosition = cookie.indexOf("=");
+    var name = equalPosition > -1 ? cookie.substr(0, equalPosition) : cookie;
+    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+  }
+
+  resetAllFormValues();
+
+  jQT.goTo("#login", "slideleft");
 }
 
 function alertAndScrollToField(formField, errorMessage, duration) {
@@ -45,7 +138,7 @@ function alertAndScrollToField(formField, errorMessage, duration) {
     }
 
     navigator.notification.alert(errorMessage, function() {
-		$("html, body").animate({ scrollTop: $(formField).offset().top - 30 }, duration);
+		  $("html, body").animate({ scrollTop: $(formField).offset().top - 30 }, duration);
     }, "Error!", "OK");
 }
 
@@ -295,9 +388,9 @@ function getClientHandout(clientID) {
 
 				$("#handout-password").append(password);
 
-				$(".handout-user-id").empty();
+				$("#handout-user-id").empty();
 
-				$(".handout-user-id").append(clientID);
+				$("#handout-user-id").append(clientID);
 
 				var course1ID = $("#course_id_c1", $(data)).val();
 
@@ -337,7 +430,7 @@ function getClientHandout(clientID) {
 
 				$("#user_id").val(clientID);
 
-				$("#username").val(userName);
+				$("#email-client-username").val(userName);
 			}
 	}, 'html');
 }
@@ -409,11 +502,9 @@ $(function() {
 		}
 	});
 
-	/*$("#ccUsers__password").keyup(function(event) {
-		if (event.keyCode === 13) {
-			$("#slbtn").click();
-		}
-	});*/
+  $("#logout").click(function() {
+    logout();
+  });
 
 	$("#update-clients").click(function() {
 		getClients();
@@ -449,19 +540,19 @@ $(function() {
 		$("#_ssn_0_0").removeAttr("disabled");
 		$("#_ssn_0_1").removeAttr("disabled");
 		$("#_ssn_0_2").removeAttr("disabled");
-		$("#_ssn_0_3").val("");
+		//$("#_ssn_0_3").val("");
 		$("#_ssn_0_3").attr("disabled", true);
-		$("#_ssn_0_4").val("");
+		//$("#_ssn_0_4").val("");
 		$("#_ssn_0_4").attr("disabled", true);
 		$("#has_ssn").val("1");
 	});
 
 	$("#_has_ssn_ein").click(function(event) {
-		$("#_ssn_0_0").val("");
+		//$("#_ssn_0_0").val("");
 		$("#_ssn_0_0").attr("disabled", true);
-		$("#_ssn_0_1").val("");
+		//$("#_ssn_0_1").val("");
 		$("#_ssn_0_1").attr("disabled", true);
-		$("#_ssn_0_2").val("");
+		//$("#_ssn_0_2").val("");
 		$("#_ssn_0_2").attr("disabled", true);
 		$("#_ssn_0_3").removeAttr("disabled");
 		$("#_ssn_0_4").removeAttr("disabled");
@@ -477,11 +568,11 @@ $(function() {
 		    $("#button_register_4").attr("disabled", false);
 		}
 
-        if (!validatePresenceOf($("#firstName"), "Client must have a first name.", enableRegisterButton)) {
+    if (!validatePresenceOf($("#firstName"), "Client must have a first name.", enableRegisterButton)) {
 			return false;
 		}
 
-        if (!validatePresenceOf($("#lastName"), "Client must have a last name.", enableRegisterButton)) {
+    if (!validatePresenceOf($("#lastName"), "Client must have a last name.", enableRegisterButton)) {
 			return false;
 		}
 
@@ -608,29 +699,7 @@ $(function() {
 
 					getClientHandout(clientID);
 
-					$("#ss").val("");
-                    $("#ss2").val("");
-                    $("#ss3").val("");
-                    $("#has_ssn").val("1");
-                    $("#course1").val("0");
-                    $("#course2").val("0");
-                    $("#title1").selectedIndex = 0;
-                    $("#firstName").val("");
-                    $("#middleName").val("");
-                    $("#lastName").val("");
-                    $("#_ssn_0_0").val("");
-                    $("#_ssn_0_1").val("");
-                    $("#_ssn_0_2").val("");
-                    $("#has_ssn_ssn").attr("checked", true);
-                    $("#_ssn_0_3").val("");
-                    $("#_ssn_0_4").val("");
-                    $("#has_ssn_ein").attr("checked", false);
-                    $("#ccPrefs__lang").selectedIndex = 0;
-                    $("#_course1").attr("checked", false);
-                    $("#_course2").attr("checked", false);
-                    $("#username").val("");
-                    $("#password").val("");
-                    $("#confirm_password").val("");
+          resetEnrollClientFormFields();
 
 					enableRegisterButton();
 
@@ -670,8 +739,8 @@ $(function() {
         }, 'html');
     });
 
-	$("#settings-auto-login").click(function(event) {
-		if ($("#settings-auto-login").is(":checked")) {
+	$("#settings-remember-me").click(function(event) {
+		if ($("#settings-remember-me").is(":checked")) {
 			localStorage.setItem("decaf_username", userName);
 
 			localStorage.setItem("decaf_password", password);

@@ -21,7 +21,7 @@
 	<div id="jqt">
 		<div id="login" class="current">
 			<div class="logo">
-				<img src="images/decaf-logo-placeholder.png"  alt="DECAF" />
+				<img src="images/decaf-logo-transparent.png" alt="DECAF" />
 			</div>
 			<form name="aform" id="aform" action="#" method="post" enctype="multipart/form-data" data-ajax="false">
 				<input type="hidden" name="current_page" id="current_page" value="" />
@@ -43,20 +43,25 @@
 		</div>
 		<div id="home">
 			<div class="toolbar">
-				<h1>DECAF</h1>
+				<h1><img src="images/decaf-banner.png" alt="DECAF" /></h1>
+				<a href="#" id="logout">Logout</a>
 				<a href="#settings" id="settings-button" class="button slideup">Settings</a>
 			</div>
 			<ul class="rounded">
 				<li class="arrow"><a href="#view-clients">View Clients</a></li>
 				<li class="arrow"><a href="#enroll-client">Enroll Client</a></li>
 			</ul>
+			<!--<div id="logout">
+				<a href="#" id="logout-button" class="grayButton">Log Out</a>
+			</div>-->
 			<div id="user-name" class="info"></div>
 		</div>
 		<div id="view-clients">
 			<div class="toolbar">
-				<h1>View Clients</h1>
+				<h1><img src="images/decaf-banner.png" alt="DECAF" /></h1>
 				<a href="#" class="back">Back</a>
 			</div>
+			<h1 class="page-title">View Clients</h1>
 			<ul id="clients" class="edgetoedge">
 			</ul>
 			<div class="button-container">
@@ -65,9 +70,10 @@
 		</div>
 		<div id="view-client">
 			<div class="toolbar">
-				<h1>View Client</h1>
+				<h1><img src="images/decaf-banner.png" alt="DECAF" /></h1>
 				<a href="#" class="back">Back</a>
 			</div>
+			<h1 class="page-title">View Client</h1>
 			<div id="client">
 			</div>
 			<div class="button-container">
@@ -76,9 +82,10 @@
 		</div>
 		<div id="enroll-client">
 			<div class="toolbar">
-				<h1>Enroll Client</h1>
+				<h1><img src="images/decaf-banner.png" alt="DECAF" /></h1>
 				<a href="#" class="back">Back</a>
 			</div>
+			<h1 class="page-title">Enroll Client</h1>
 			<form name="enroll" id="enroll" action="#" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="current_page" id="current_page" value="" />
 				<input type="hidden" name="next_page" id="next_page" value="" />
@@ -104,17 +111,17 @@
 					<li><input type="text" name="firstName" id="firstName" placeholder="First Name" autocomplete="off" autocorrect="off" /></li>
 					<li><input type="text" name="middleName" id="middleName" maxlength="1" placeholder="Middle Initial" autocomplete="off" autocorrect="off" /></li>
 					<li><input type="text" name="lastName" id="lastName" placeholder="Last Name" autocomplete="off" autocorrect="off" /></li>
+				</ul>
+				<h2>SSN or EIN</h2>
+				<ul class="edit rounded">
 					<li>
-						<input type="number" name="_ssn_0_0" id="_ssn_0_0" maxlength="3" /> - <input type="number" name="_ssn_0_1" id="_ssn_0_1" maxlength="2" /> - <input type="number" name="_ssn_0_2" id="_ssn_0_2" maxlength="4" />
-						<label for="_has_ssn_ssn"><input type="radio" name="_has_ssn" id="_has_ssn_ssn" checked="checked" value="1" /> SSN</label>
+						<input type="radio" name="_has_ssn" id="_has_ssn_ssn" checked="checked" value="1" style="margin-right: 10px;" /><label for="_has_ssn_ssn" style="display: inline-block; width: 40px;">SSN</label><input type="text" name="_ssn_0_0" id="_ssn_0_0" maxlength="3" placeholder="###" /> - <input type="text" name="_ssn_0_1" id="_ssn_0_1" maxlength="2" placeholder="##" /> - <input type="text" name="_ssn_0_2" id="_ssn_0_2" maxlength="4" placeholder="####" />
 					</li>
 					<li>
-						<input type="number" name="_ssn_0_3" id="_ssn_0_3" disabled="disabled" maxlength="2" /> -
-						<input type="number" name="_ssn_0_4" id="_ssn_0_4" disabled="disabled" maxlength="7" />
-						<label for="_has_ssn_ein"><input type="radio" name="_has_ssn" id="_has_ssn_ein" value="0" /> EIN</label>
+						<input type="radio" name="_has_ssn" id="_has_ssn_ein" value="0" style="margin-right: 10px;" /><label for="_has_ssn_ein" style="display: inline-block; width: 40px;">EIN</label><input type="text" name="_ssn_0_3" id="_ssn_0_3" disabled="disabled" maxlength="2" placeholder="##" /> - <input type="text" name="_ssn_0_4" id="_ssn_0_4" disabled="disabled" maxlength="7" placeholder="#######" />
 					</li>
 				</ul>
-				<h2>Language Prefence</h2>
+				<h2>Language Preference</h2>
 				<ul class="edit rounded">
 					<li>
 						<select name="ccPrefs__lang" id="ccPrefs__lang" placeholder="Language">
@@ -144,9 +151,10 @@
 		</div>
 		<div id="client-handout">
 			<div class="toolbar">
-				<h1>Client Handout</h1>
+				<h1><img src="images/decaf-banner.png" alt="DECAF" /></h1>
 				<a href="#home" class="back">Home</a>
 			</div>
+			<h1 class="page-title">Client Handout</h1>
 			<h2>Online Course Instructions:</h2>
 			<div class="info" style="text-align: left;">
 				<ol>
@@ -187,7 +195,7 @@
 				<input type="hidden" name="password" id="email-client-password" value="" />
 				<input type="hidden" name="randomz" id="randomz" value="" />
 				<input type="hidden" name="user_id" id="user_id" value="" />
-				<input type="hidden" name="username" id="username" value="" />
+				<input type="hidden" name="username" id="handout-form-username" value="" />
 				<ul class="edit rounded">
 					<li><input type="text" name="email_to" id="email_to" placeholder="Client Email Address" autocomplete="off" autocorrect="off" /></li>
 				</ul>
@@ -198,21 +206,24 @@
 		</div>
 		<div id="settings">
 			<div class="toolbar">
-				<h1>Settings</h1>
+				<h1><img src="images/decaf-banner.png" alt="DECAF" /></h1>
 				<a class="back" href="#">Back</a>
 				<a id="about-button" class="button slideup" href="#about">About</a>
 			</div>
+			<h1 class="page-title">Settings</h1>
 			<form>
 				<ul class="edit rounded">
-					<li>Automatic Login <span class="toggle"><input type="checkbox" name="settings-auto-login" id="settings-auto-login" /></span></li>
+					<li>Remember Me <span class="toggle"><input type="checkbox" name="settings-remember-me" id="settings-remember-me" /></span></li>
 				</ul>
 			</form>
 		</div>
 		<div id="about">
-			<div class="logo"><img src="images/decaf-logo-placeholder.png"  alt="DECAF" /></div>
-			<p><strong>DECAF iPhone App</strong><br />Version 0.9.0<br />Created by <a href="http://mojomedialabs.com/" rel="external">Mojo Media Labs</a></p>
+			<div class="logo">
+				<img src="images/decaf-logo-transparent.png" alt="DECAF" />
+			</div>
+			<p><strong>DECAF iPhone App</strong><br />Version 0.9.2<br />Created by <a href="http://mojomedialabs.com/" rel="external">Mojo Media Labs</a></p>
 			<p><em>Debt Education &amp; Certification Foundation (DECAF) provides credit counseling certificates as required before filing for bankruptcy and Debtor Education courses to be completed after filing.</em></p>
-			<p><a href="https://www.bkcert.com/index.php" rel="external">Debt Educatin &amp; Certification Foundation</a><br/><span id="copyright">&copy; 2006-</span></p>
+			<p><a href="https://www.bkcert.com/index.php" rel="external">Debt Education &amp; Certification Foundation</a><br/><span id="copyright">&copy; 2006-</span></p>
 			<p><br /><a href="#" class="grayButton goback">Close</a></p>
 		</div>
 	</div>
