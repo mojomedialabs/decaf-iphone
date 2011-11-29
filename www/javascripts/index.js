@@ -112,7 +112,48 @@ function resetAllFormValues() {
 }
 
 function login() {
+  $("#slbtn").attr("disabled", true);
+  $("#ccUsers__username").attr("disabled", true);
+  $("#ccUsers__password").attr("disabled", true);
+  $("#remember_me").attr("disabled", true);
 
+	var jqxhr = $.post("https://www.bkcert.com/login/login.php", $("form#aform").serialize(),
+		function(data, textStatus, jqXHR) {
+			var result = $(".error", $(data));
+
+			if (result.length) {
+				$("#slbtn").attr("disabled", false);
+				$("#ccUsers__username").attr("disabled", false);
+        $("#ccUsers__password").attr("disabled", false);
+        $("#remember_me").attr("disabled", false);
+
+				navigator.notification.alert("Login failed! Please try again.", null, "Error!", "Retry");
+			} else {
+				userName = $("#ccUsers__username").val();
+				password = $("#ccUsers__password").val();
+
+				if ($("#remember_me").is(":checked")) {
+					localStorage.setItem("decaf_username", $("#ccUsers__username").val());
+
+					localStorage.setItem("decaf_password", $("#ccUsers__password").val());
+
+					localStorage.setItem("decaf_remember_me", true);
+				} else {
+					localStorage.clear();
+				}
+
+				getUserName();
+
+				getClients();
+
+				jQT.goTo("#home", "slideleft");
+
+				$("#slbtn").attr("disabled", false);
+				$("#ccUsers__username").attr("disabled", false);
+        $("#ccUsers__password").attr("disabled", false);
+        $("#remember_me").attr("disabled", false);
+			}
+	}, "html");
 }
 
 function logout() {
@@ -132,182 +173,17 @@ function logout() {
   jQT.goTo("#login", "slideleft");
 }
 
-function alertAndScrollToField(formField, errorMessage, duration) {
-    if (duration === undefined) {
-        duration = 250;
-    }
-
-    navigator.notification.alert(errorMessage, function() {
-		  $("html, body").animate({ scrollTop: $(formField).offset().top - 30 }, duration);
-    }, "Error!", "OK");
-}
-
-function validatePresenceOf(formField, errorMessage, falseCallback, trueCallback) {
-    if ($(formField).val().isBlank()) {
-        alertAndScrollToField(formField, errorMessage);
-
-        if (falseCallback) {
-            falseCallback();
-        }
-
-        return false;
-    } else {
-        if (trueCallback) {
-            trueCallback();
-        }
-
-        return true;
-    }
-}
-
-function validateLengthOf(formField, errorMessage, minimum, maximum, falseCallback, trueCallback) {
-    if (minimum < 1) {
-        minimum = 1;
-    }
-
-    if ($(formField).val().length < minimum) {
-        alertAndScrollToField(formField, errorMessage);
-
-        if (falseCallback) {
-            falseCallback();
-        }
-
-        return false;
-    }
-
-    if (maximum) {
-        if (maximum < 1) {
-            maximum = 1;
-        }
-
-        if (minimum > maximum) {
-            var temp = minimum;
-            minimum = maximum;
-            maximum = temp;
-        }
-
-        if ($(formField).val().length > maximum) {
-            alertAndScrollToField(formField, errorMessage);
-
-            if (falseCallback) {
-                falseCallback();
-            }
-
-            return false;
-        }
-    }
-
-    if (trueCallback) {
-        trueCallback();
-    }
-
-    return true;
-}
-
-function validateFormatOf(formField, errorMessage, format, falseCallback, trueCallback) {
-    if (!format.test($(formField).val())) {
-        alertAndScrollToField(formField, errorMessage);
-
-        if (falseCallback) {
-            falseCallback();
-        }
-
-        return false;
-    } else {
-        if (trueCallback) {
-            trueCallback();
-        }
-
-        return true;
-    }
-}
-
-function validateConfirmationOf(formField1, formField2, errorMessage, falseCallback, trueCallback) {
-    if ($(formField1).val() !== $(formField2).val()) {
-        alertAndScrollToField(formField1, errorMessage);
-
-        if (falseCallback) {
-            falseCallback();
-        }
-
-        return false;
-    } else {
-        if (trueCallback) {
-            trueCallback();
-        }
-
-        return true;
-    }
-}
-
-function validateSSN(ssn1, ssn2, ssn3) {
-	var ssn = ssn1 + "-" + ssn2 + "-" + ssn3;
-    var ssnFormat = /^([0-6]\d{2}|7[0-6]\d|77[0-2])([ \-]?)(\d{2})\2(\d{4})$/;
-
-    if (!ssnFormat.test(ssn)) {
-		navigator.notification.alert("Invalid SSN format.", function() {
-			$("html, body").animate({
-				scrollTop: $("#_ssn_0_0").offset().top -30
-			}, 250);
-
-			$("#button_register_4").attr("disabled", false);
-		}, "Error!", "OK");
-
-		return false;
-	}
-
-	ssn = (ssn.split("-")).join("");
-
-    if (ssn.substr(0, 3) === "000") {
-		navigator.notification.alert("Invalid SSN format.", function() {
-			$("html, body").animate({
-				scrollTop: $("#_ssn_0_0").offset().top -30
-			}, 250);
-
-			$("#button_register_4").attr("disabled", false);
-		}, "Error!", "OK");
-
-		return false;
-	}
-
-    if (ssn.substr(3, 2) === "00") {
-		navigator.notification.alert("Invalid SSN format.", function() {
-			$("html, body").animate({
-				scrollTop: $("#_ssn_0_1").offset().top -30
-			}, 250);
-
-			$("#button_register_4").attr("disabled", false);
-		}, "Error!", "OK");
-
-		return false;
-	}
-
-    if (ssn.substring(5, 4) === "0000") {
-		navigator.notification.alert("Invalid SSN format.", function() {
-			$("html, body").animate({
-				scrollTop: $("#_ssn_0_2").offset().top -30
-			}, 250);
-
-			$("#button_register_4").attr("disabled", false);
-		}, "Error!", "OK");
-
-		return false;
-	}
-
-    return true;
-}
-
 function getUserName() {
 	var jqxhr = $.get("https://www.bkcert.com/attorney/view-clients.php", null,
 		function(data, textStatus, jqXHR) {
 			var result = $("#top-bottom-01 > div > strong", $(data));
 
 			if (result.length) {
-				$("#user-name").append($(result).text().substr(0, $(result).text().indexOf(".") + 1));
+				$("#user-name").empty().append($(result).text().substr(0, $(result).text().indexOf(".") + 1));
 			} else {
 				navigator.notification.alert("Error retrieving user name!", null, "Error!", "OK");
 			}
-	}, 'html');
+	}, "html");
 }
 
 function getClients() {
@@ -328,8 +204,8 @@ function getClients() {
 					var clientURL = $(value).children().eq(0).children().attr("href");
 
 					client.clientID = clientURL.substr(clientURL.indexOf("client_user_id") + 15);
-					client.firstName = $(value).children().eq(0).text();
-					client.lastName = $(value).children().eq(1).text();
+					client.lastName = $(value).children().eq(0).text();
+					client.firstName = $(value).children().eq(1).text();
 					client.SSN = $(value).children().eq(2).text();
 					client.dateRegistered = $(value).children().eq(3).text();
 					client.course1 = $(value).children().eq(4).text();
@@ -364,7 +240,7 @@ function getClients() {
 			} else {
 				navigator.notification.alert("Error retrieving client list!", null, "Error!", "OK");
 			}
-	}, 'html');
+	}, "html");
 }
 
 function getClientHandout(clientID) {
@@ -432,7 +308,7 @@ function getClientHandout(clientID) {
 
 				$("#email-client-username").val(userName);
 			}
-	}, 'html');
+	}, "html");
 }
 
 $.fn.forceInteger = function() {
@@ -493,7 +369,7 @@ $(function() {
 
 					jQT.goTo("#home", "slideleft");
 				}
-		}, 'html');
+		}, "html");
 	});
 
 	$("#ccUsers__username, #ccUsers__password").keyup(function(event) {
@@ -707,7 +583,7 @@ $(function() {
 
 					getClients();
 				}
-		}, 'html');
+		}, "html");
 	});
 
 	$("#firstName, #middleName, #lastName, #_ssn_0_0, #_ssn_0_1, #_ssn_0_2, #_ssn_0_3, #_ssn_0_4, #username, #password, #confirm_password").keyup(function(event) {
@@ -736,7 +612,7 @@ $(function() {
                 }
 
                 $("#email-submit").attr("disabled", false);
-        }, 'html');
+        }, "html");
     });
 
 	$("#settings-remember-me").click(function(event) {
