@@ -28,13 +28,24 @@
       buildConfiguration = "Debug">
       <Testables>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "84834FC3141E3D060044E037"
+            BuildableName = "DECAF.app"
+            BlueprintName = "DECAF"
+            ReferencedContainer = "container:DECAF.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Debug">
+      buildConfiguration = "Debug"
+      debugDocumentVersioning = "YES"
+      allowLocationSimulation = "YES">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
@@ -45,13 +56,24 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
+         <AdditionalOption
+            key = "OBJC_PRINT_EXCEPTIONS"
+            value = "YES"
+            isEnabled = "YES">
+         </AdditionalOption>
+         <AdditionalOption
+            key = "DYLD_PRINT_LIBRARIES"
+            value = ""
+            isEnabled = "YES">
+         </AdditionalOption>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Release">
+      buildConfiguration = "Release"
+      debugDocumentVersioning = "YES">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
