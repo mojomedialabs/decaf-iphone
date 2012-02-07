@@ -4,6 +4,8 @@ var jQT = new $.jQTouch( {
 	preloadImages: []
 });
 
+var timesOpened;
+
 var userName = "";
 var password = "";
 
@@ -22,6 +24,12 @@ var clients = [];
 var sessionKeepAliveTimeoutID;
 
 function onDeviceReady() {
+	var networkState = navigator.network.connection.type;
+
+	if (networkState === Connection.NONE) {
+		navigator.notification.alert("No network connection detected. You must be connected to the internet to log in.", null, "Error!", "OK");
+	}
+
 	var rememberMe = localStorage.getItem("decaf_remember_me");
 
 	if (rememberMe) {
@@ -29,9 +37,14 @@ function onDeviceReady() {
 
 		$("#ccUsers__password").val(localStorage.getItem("decaf_password"));
 
-		$("#slbtn").click();
+		if (networkState !== Connection.NONE) {
+			$("#slbtn").click();
+		}
 	} else {
-		localStorage.clear();
+		//localStorage.clear();
+        localStorage.removeItem("decaf_remember_me");
+        localStorage.removeItem("decaf_username");
+        localStorage.removeItem("decaf_password");
 	}
 }
 
@@ -40,25 +53,25 @@ function onBodyLoad() {
 }
 
 function resetLoginFormFields() {
-  $("#ccUsers__username").val("");
+	$("#ccUsers__username").val("");
 	$("#ccUsers__password").val("");
 	$("#remember_me").val("remember");
 	$("#remember_me").attr("checked", true);
 }
 
 function resetEnrollClientFormFields() {
-  $("#ss").val("");
-  $("#ss2").val("");
-  $("#ss3").val("");
-  $("#has_ssn").val("1");
-  $("#course1").val("0");
-  $("#course2").val("0");
-  $("#title1").attr("selectedIndex", 0);
-  $("#firstName").val("");
-  $("#middleName").val("");
-  $("#lastName").val("");
-  $("#_has_ssn_ssn").val("1");
-  $("#_has_ssn_ssn").attr("checked", true);
+	$("#ss").val("");
+	$("#ss2").val("");
+	$("#ss3").val("");
+	$("#has_ssn").val("1");
+	$("#course1").val("0");
+	$("#course2").val("0");
+	$("#title1").attr("selectedIndex", 0);
+	$("#firstName").val("");
+	$("#middleName").val("");
+	$("#lastName").val("");
+	$("#_has_ssn_ssn").val("1");
+	$("#_has_ssn_ssn").attr("checked", true);
 	$("#_ssn_0_0").val("");
 	$("#_ssn_0_0").attr("disabled", false);
 	$("#_ssn_0_1").val("");
@@ -71,38 +84,38 @@ function resetEnrollClientFormFields() {
 	$("#_ssn_0_3").attr("disabled", true);
 	$("#_ssn_0_4").val("");
 	$("#_ssn_0_4").attr("disabled", true);
-  $("#ccPrefs__lang").attr("selectedIndex", 0);
-  $("#_course1").val("on");
-  $("#_course1").attr("checked", false);
-  $("#_course1").val("on");
-  $("#_course2").attr("checked", false);
-  $("#username").val("");
-  $("#password").val("");
-  $("#confirm_password").val("");
+	$("#ccPrefs__lang").attr("selectedIndex", 0);
+	$("#_course1").val("on");
+	$("#_course1").attr("checked", false);
+	$("#_course1").val("on");
+	$("#_course2").attr("checked", false);
+	$("#username").val("");
+	$("#password").val("");
+	$("#confirm_password").val("");
 }
 
 function resetClientHandoutFormFields() {
-  $("#handout-username").empty();
+	$("#handout-username").empty();
 	$("#handout-password").empty();
-  $("#handout-course-id1").empty();
-  $(".handout-user-id").empty();
-  $("#handout-course-id2").empty();
-  $(".handout-user-id").empty();
-  $("#attorney_code").val("");
-  $("#bkcase").val("");
-  $("#client_name").val("");
-  $("#course_id_c1").val("");
-  $("#course_id_c2").val("");
-  $("#firm").val("");
-  $("#email-client-password").val("");
-  $("#randomz").val("");
-  $("#user_id").val("");
-  $("#email-client-username").val("");
-  $("#email_to").val("");
+	$("#handout-course-id1").empty();
+	$(".handout-user-id").empty();
+	$("#handout-course-id2").empty();
+	$(".handout-user-id").empty();
+	$("#attorney_code").val("");
+	$("#bkcase").val("");
+	$("#client_name").val("");
+	$("#course_id_c1").val("");
+	$("#course_id_c2").val("");
+	$("#firm").val("");
+	$("#email-client-password").val("");
+	$("#randomz").val("");
+	$("#user_id").val("");
+	$("#email-client-username").val("");
+	$("#email_to").val("");
 }
 
 function resetAllFormValues() {
-  resetLoginFormFields();
+	resetLoginFormFields();
 
 	$("#user-name").empty();
 
@@ -110,224 +123,249 @@ function resetAllFormValues() {
 
 	resetEnrollClientFormFields();
 
-  $("#settings-remember-me").attr("checked", true);
+	$("#settings-remember-me").attr("checked", true);
 }
 
 function keepSessionAlive() {
-  var jqxhr = $.get("https://www.bkcert.com/attorney/view-clients.php", null,
-		function(data, textStatus, jqXHR) {
-			var result = $("#body-homepage", $(data));
+	$.get("https://www.bkcert.com/attorney/view-clients.php", null, function(data, textStatus, jqXHR) {
+		var result = $("#body-homepage", $(data));
 
-			if (result.length) {
-			  var rememberMe = localStorage.getItem("decaf_remember_me");
+		if (result.length) {
+			var rememberMe = localStorage.getItem("decaf_remember_me");
 
-			  logout();
+			logout();
 
-      	if (rememberMe) {
-      		$("#ccUsers__username").val(userName);
+			if (rememberMe) {
+				$("#ccUsers__username").val(userName);
 
-      		$("#ccUsers__password").val(password);
-      	}
-
-				login();
-			} else {
-				sessionKeepAliveTimeoutID = setTimeout(keepSessionAlive, 30000);
+				$("#ccUsers__password").val(password);
 			}
+
+			login();
+		} else {
+			sessionKeepAliveTimeoutID = setTimeout(keepSessionAlive, 30000);
+		}
 	}, "html");
 }
 
 function login() {
-  $("#slbtn").attr("disabled", true);
+	$("#slbtn").attr("disabled", true);
 
-	var jqxhr = $.post("https://www.bkcert.com/login/login.php", $("form#aform").serialize(),
-		function(data, textStatus, jqXHR) {
-			var result = $(".error", $(data));
+	$.post("https://www.bkcert.com/login/login.php", $("form#aform").serialize(), function(data, textStatus, jqXHR) {
+		var result = $(".error", $(data));
 
-			if (result.length) {
-				$("#slbtn").attr("disabled", false);
+		if (result.length) {
+			$("#slbtn").attr("disabled", false);
 
-				navigator.notification.alert("Login failed! Please try again.", null, "Error!", "Retry");
+			navigator.notification.alert("Login failed! Please try again.", null, "Error!", "Retry");
+		} else {
+			userName = $("#ccUsers__username").val();
+			password = $("#ccUsers__password").val();
+
+			if ($("#remember_me").is(":checked")) {
+				localStorage.setItem("decaf_username", userName);
+
+				localStorage.setItem("decaf_password", password);
+
+				localStorage.setItem("decaf_remember_me", true);
 			} else {
-				userName = $("#ccUsers__username").val();
-				password = $("#ccUsers__password").val();
+				//localStorage.clear();
+                localStorage.removeItem("decaf_remember_me");
+                localStorage.removeItem("decaf_username");
+                localSotrage.removeItem("decaf_password");
+			}
 
-				if ($("#remember_me").is(":checked")) {
-					localStorage.setItem("decaf_username", userName);
+			getUserName();
 
-					localStorage.setItem("decaf_password", password);
+			getClients();
 
-					localStorage.setItem("decaf_remember_me", true);
-				} else {
-					localStorage.clear();
+			sessionKeepAliveTimeoutID = setTimeout(keepSessionAlive, 30000);
+
+			jQT.goTo("#home", "slideleft");
+
+            timesOpened = parseInt(localStorage.getItem("decaf_times_opened"));
+
+			if (isNaN(timesOpened)) {
+				timesOpened = 1;
+
+				localStorage.setItem("decaf_times_opened", timesOpened);
+			} else {
+				timesOpened += 1;
+
+				if (timesOpened === 3) {
+					navigator.notification.confirm(
+						"Would you like to take a minute to rate this app?",
+						function(button) {
+							if (button === 1) {
+								location.href = "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=493361306&onlyLatestVersion=true&pageNumber=0&sortOrdering=1&type=Purple+Software";
+							}
+						},
+						"Rate this app.",
+						"Okay,No Thanks");
 				}
 
-				getUserName();
-
-				getClients();
-
-				sessionKeepAliveTimeoutID = setTimeout(keepSessionAlive, 30000);
-
-				jQT.goTo("#home", "slideleft");
-
-				$("#slbtn").attr("disabled", false);
+				localStorage.setItem("decaf_times_opened", timesOpened);
 			}
+
+			$("#slbtn").attr("disabled", false);
+		}
 	}, "html");
 }
 
 function logout() {
-  localStorage.clear();
+	//localStorage.clear();
+    localStorage.removeItem("decaf_remember_me");
+    localStorage.removeItem("decaf_username");
+    localSotrage.removeItem("decaf_password");
 
-  var cookies = document.cookie.split(";");
+	var cookies = document.cookie.split(";");
 
-  for (var i = 0; i < cookies.length; i++) {
-    var cookie = cookies[i];
-    var equalPosition = cookie.indexOf("=");
-    var name = equalPosition > -1 ? cookie.substr(0, equalPosition) : cookie;
-    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-  }
+	for (var i = 0; i < cookies.length; i++) {
+		var cookie = cookies[i];
+		var equalPosition = cookie.indexOf("=");
+		var name = equalPosition > -1 ? cookie.substr(0, equalPosition) : cookie;
+		document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+	}
 
-  resetAllFormValues();
+	resetAllFormValues();
 
-  clearTimeout(sessionKeepAliveTimeoutID);
+	clearTimeout(sessionKeepAliveTimeoutID);
 
-  jQT.goTo("#login", "slideleft");
+	jQT.goTo("#login", "slideleft");
 }
 
 function getUserName() {
-	var jqxhr = $.get("https://www.bkcert.com/attorney/view-clients.php", null,
-		function(data, textStatus, jqXHR) {
-			var result = $("#top-bottom-01 > div > strong", $(data));
+	$.get("https://www.bkcert.com/attorney/view-clients.php", null, function(data, textStatus, jqXHR) {
+		var result = $("#top-bottom-01 > div > strong", $(data));
 
-			if (result.length) {
-				$("#user-name").empty().append($(result).text().substr(0, $(result).text().indexOf(".") + 1));
-			} else {
-				navigator.notification.alert("Error retrieving user name!", null, "Error!", "OK");
-			}
+		if (result.length) {
+			$("#user-name").empty().append($(result).text().substr(0, $(result).text().lastIndexOf(".") + 1));
+		} else {
+			navigator.notification.alert("Error retrieving user name!", null, "Error!", "OK");
+		}
 	}, "html");
 }
 
 function getClients() {
-	var jqxhr = $.get("https://www.bkcert.com/attorney/view-clients.php", null,
-		function(data, textStatus, jqXHR) {
-			var result = $("table.listview tbody tr", $(data));
+	$.post("https://www.bkcert.com/attorney/view-clients.php", { _sticky_dropdown_0_unset: "1" }, function(data, textStatus, jqXHR) {
+		var result = $("table.listview tbody tr", $(data));
 
-			if (result.length) {
-				clients.length = 0;
+		if (result.length) {
+			clients.length = 0;
 
-				$(result).each(function(index, value) {
-					if (index === 0) {
-						return true;
-					}
+			$(result).each(function(index, value) {
+				if (index === 0) {
+					return true;
+				}
 
-					var client = new Client();
+				var client = new Client();
 
-					var clientURL = $(value).children().eq(0).children().attr("href");
+				var clientURL = $(value).children().eq(0).children().attr("href");
 
-					client.clientID = clientURL.substr(clientURL.indexOf("client_user_id") + 15);
-					client.lastName = $(value).children().eq(0).text();
-					client.firstName = $(value).children().eq(1).text();
-					client.SSN = $(value).children().eq(2).text();
-					client.dateRegistered = $(value).children().eq(3).text();
-					client.course1 = $(value).children().eq(4).text();
-					client.course2 = $(value).children().eq(5).text();
+				client.clientID = clientURL.substr(clientURL.indexOf("client_user_id") + 15);
+				client.lastName = $(value).children().eq(0).text();
+				client.firstName = $(value).children().eq(1).text();
+				client.SSN = $(value).children().eq(2).text();
+				client.dateRegistered = $(value).children().eq(3).text();
+				client.course1 = $(value).children().eq(4).text();
+				client.course2 = $(value).children().eq(5).text();
 
-					clients.push(client);
+				clients.push(client);
+			});
+
+			if (clients.length) {
+				clients.sortBy(function(element) {
+					return element.lastName;
 				});
 
-				if (clients.length) {
-					clients.sortBy(function(element) {
-						return element.lastName;
-					});
+				$("#clients").empty();
 
-					$("#clients").empty();
+				var seperator = clients[0].lastName.substr(0, 1).toUpperCase();
 
-					var seperator = clients[0].lastName.substr(0, 1).toUpperCase();
+				$("#clients").append("<li class=\"sep\">" + seperator + "</li>");
 
-					$("#clients").append("<li class=\"sep\">" + seperator + "</li>");
+				clients.each(function(element, index, array) {
+					if (element.lastName.substr(0,1 ).toUpperCase() !== seperator) {
+						seperator = element.lastName.substr(0, 1).toUpperCase();
 
-					clients.each(function(element, index, array) {
-						if (element.lastName.substr(0,1 ).toUpperCase() !== seperator) {
-							seperator = element.lastName.substr(0, 1).toUpperCase();
+						$("#clients").append("<li class=\"sep\">" + seperator + "</li>");
+					}
 
-							$("#clients").append("<li class=\"sep\">" + seperator + "</li>");
-						}
-
-						$("#clients").append("<li><a class=\"client-link\" data-client-index=\"" + index + "\" href=\"#\">" + element.lastName + ", <em>" + element.firstName + "</em></li>");
-					});
-				} else {
-					$("#clients").append("<li>No clients found.</li>");
-				}
+					$("#clients").append("<li><a class=\"client-link\" data-client-index=\"" + index + "\" href=\"#\">" + element.lastName + ", <em>" + element.firstName + "</em></li>");
+				});
 			} else {
-				navigator.notification.alert("Error retrieving client list!", null, "Error!", "OK");
+				$("#clients").append("<li>No clients found.</li>");
 			}
+		} else {
+			navigator.notification.alert("Error retrieving client list!", null, "Error!", "OK");
+		}
 	}, "html");
 }
 
 function getClientHandout(clientID) {
-	var jqxhr = $.get("https://www.bkcert.com/forms/handouts/client-handout-both.php?client_user_id=" + clientID, null,
-		function(data, textStatus, jqXHR) {
-			var result = $("body", $(data)).text();
+	$.get("https://www.bkcert.com/forms/handouts/client-handout-both.php?client_user_id=" + clientID, null, function(data, textStatus, jqXHR) {
+		var result = $("body", $(data)).text();
 
-			if (result.indexOf("Error generating the client handout.") !== -1) {
-				navigator.notification.alert("Error generating the client handout!", null, "Error!", "OK");
-			} else {
+		if (result.indexOf("Error generating the client handout.") !== -1) {
+			navigator.notification.alert("Error generating the client handout!", null, "Error!", "OK");
+		} else {
 
-				var clientUserName = $("#username", $(data)).val();
+			var clientUserName = $("#username", $(data)).val();
 
-				$("#handout-username").empty();
+			$("#handout-username").empty();
 
-				$("#handout-username").append(clientUserName);
+			$("#handout-username").append(clientUserName);
 
-				var clientPassword = $("#password", $(data)).val();
+			var clientPassword = $("#password", $(data)).val();
 
-				$("#handout-password").empty();
+			$("#handout-password").empty();
 
-				$("#handout-password").append(clientPassword);
+			$("#handout-password").append(clientPassword);
 
-				$(".handout-user-id").empty();
+			$(".handout-user-id").empty();
 
-				$(".handout-user-id").append(clientID);
+			$(".handout-user-id").append(clientID);
 
-				var course1ID = $("#course_id_c1", $(data)).val();
+			var course1ID = $("#course_id_c1", $(data)).val();
 
-				$("#handout-course-id1").empty();
+			$("#handout-course-id1").empty();
 
-				$("#handout-course-id1").append(course1ID);
+			$("#handout-course-id1").append(course1ID);
 
-				var course2ID = $("#course_id_c2", $(data)).val();
+			var course2ID = $("#course_id_c2", $(data)).val();
 
-				$("#handout-course-id2").empty();
+			$("#handout-course-id2").empty();
 
-				$("#handout-course-id2").append(course2ID);
+			$("#handout-course-id2").append(course2ID);
 
-				var attorneyCode = $("#attorney_code", $(data)).val();
+			var attorneyCode = $("#attorney_code", $(data)).val();
 
-				$("#attorney_code").val(attorneyCode);
+			$("#attorney_code").val(attorneyCode);
 
-				var bkCase = $("#bkcase", $(data)).val();
+			var bkCase = $("#bkcase", $(data)).val();
 
-				$("#bkcase").val(bkCase);
+			$("#bkcase").val(bkCase);
 
-				var clientName = $("#client_name", $(data)).val();
+			var clientName = $("#client_name", $(data)).val();
 
-				$("#client_name").val(clientName);
+			$("#client_name").val(clientName);
 
-				$("#course_id_c1").val(course1ID);
+			$("#course_id_c1").val(course1ID);
 
-				$("#course_id_c2").val(course2ID);
+			$("#course_id_c2").val(course2ID);
 
-				var firm = $("#firm", $(data)).val();
+			var firm = $("#firm", $(data)).val();
 
-				$("#firm").val(firm);
+			$("#firm").val(firm);
 
-				$("#email-client-password").val(clientPassword);
+			$("#email-client-password").val(clientPassword);
 
-				$("#randomz").val(Math.random() * 99999);
+			$("#randomz").val(Math.random() * 99999);
 
-				$("#user_id").val(clientID);
+			$("#user_id").val(clientID);
 
-				$("#handout-form-username").val(clientUserName);
-			}
+			$("#handout-form-username").val(clientUserName);
+		}
 	}, "html");
 }
 
@@ -358,15 +396,15 @@ $.fn.forceInteger = function() {
 var logoutButtonTimeoutID;
 
 function temporarilyDisableLogoutButton() {
-  $("#logout").hide();
+	$("#logout").hide();
 
-  clearTimeout(logoutButtonTimeoutID);
+	clearTimeout(logoutButtonTimeoutID);
 
-  logoutButtonTimeoutID = setTimeout(enableLogoutButton, 500);
+	logoutButtonTimeoutID = setTimeout(enableLogoutButton, 500);
 }
 
 function enableLogoutButton() {
-  $("#logout").show();
+	$("#logout").show();
 }
 
 $(function() {
@@ -374,40 +412,6 @@ $(function() {
 		event.preventDefault();
 
 		login();
-
-		/*$("#slbtn").attr("disabled", true);
-
-		var jqxhr = $.post("https://www.bkcert.com/login/login.php", $("form#aform").serialize(),
-			function(data, textStatus, jqXHR) {
-				var result = $(".error", $(data));
-
-				if (result.length) {
-					$("#slbtn").attr("disabled", false);
-
-					navigator.notification.alert("Login failed! Please try again.", null, "Error!", "Retry");
-				} else {
-					userName = $("#ccUsers__username").val();
-					password = $("#ccUsers__password").val();
-
-					if ($("#remember_me").is(":checked")) {
-						localStorage.setItem("decaf_username", $("#ccUsers__username").val());
-
-						localStorage.setItem("decaf_password", $("#ccUsers__password").val());
-
-						localStorage.setItem("decaf_remember_me", true);
-					} else {
-						localStorage.clear();
-					}
-
-					getUserName();
-
-					getClients();
-
-					sessionKeepAliveTimeoutID = setTimeout(keepSessionAlive, 10000);
-
-					jQT.goTo("#home", "slideleft");
-				}
-		}, "html");*/
 	});
 
 	$("#ccUsers__username, #ccUsers__password").keyup(function(event) {
@@ -416,9 +420,9 @@ $(function() {
 		}
 	});
 
-  $("#logout").click(function() {
-    logout();
-  });
+	$("#logout").click(function() {
+		logout();
+	});
 
 	$("#update-clients").click(function() {
 		getClients();
@@ -477,11 +481,11 @@ $(function() {
 		    $("#button_register_4").attr("disabled", false);
 		}
 
-    if (!validatePresenceOf($("#firstName"), "Client must have a first name.", enableRegisterButton)) {
+	    if (!validatePresenceOf($("#firstName"), "Client must have a first name.", enableRegisterButton)) {
 			return false;
 		}
 
-    if (!validatePresenceOf($("#lastName"), "Client must have a last name.", enableRegisterButton)) {
+	    if (!validatePresenceOf($("#lastName"), "Client must have a last name.", enableRegisterButton)) {
 			return false;
 		}
 
@@ -550,11 +554,9 @@ $(function() {
 		}
 
 		if ($("#course1").val() === "0" && $("#course2").val() === "0") {
-			  navigator.notification.alert("The client must be enrolled in at least one course.", function() {
+			navigator.notification.alert("The client must be enrolled in at least one course.", function() {
 
-				$("html, body").animate({
-					scrollTop: $("#_course1").offset().top -30
-				}, 250);
+				$("html, body").animate({ scrollTop: $("#_course1").offset().top - 30 }, 250);
 
 				$("#button_register_4").attr("disabled", false);
 			}, "Error!", "OK");
@@ -566,9 +568,9 @@ $(function() {
 			return false;
 		}
 
-    if (!validateFormatOf($("#username"), "Client username can only consist of alphanumeric characters.", /^[a-zA-Z0-9@._]*$/, enableRegisterButton)) {
-        return false;
-    }
+	    if (!validateFormatOf($("#username"), "Client username can only consist of alphanumeric characters.", /^[a-zA-Z0-9@._]*$/, enableRegisterButton)) {
+	        return false;
+	    }
 
 		if (!validatePresenceOf($("#password"), "Client must have a password.", enableRegisterButton)) {
 			return false;
@@ -582,43 +584,40 @@ $(function() {
 		    return false;
 		}
 
-		var jqxhr = $.post("https://www.bkcert.com/attorney/client-register.php", $("form#enroll").serialize(),
-			function(data, textStatus, jqXHR) {
-				var error = $("#body-content p.error", $(data)).text();
+		$.post("https://www.bkcert.com/attorney/client-register.php", $("form#enroll").serialize(), function(data, textStatus, jqXHR) {
+			var error = $("#body-content p.error", $(data)).text();
 
-				if (error.length > 0) {
-					enableRegisterButton();
+			if (error.length > 0) {
+				enableRegisterButton();
 
-					navigator.notification.alert(error, null, "Error!", "OK");
+				navigator.notification.alert(error, null, "Error!", "OK");
+			}
+
+			var result = $("#body-content > h2", $(data)).text();
+
+			if (result !== "Client Registration Successful!") {
+				enableRegisterButton();
+			} else {
+				var clientHandoutURL = $(".handout-link a", $(data)).attr("href");
+
+				var clientID = clientHandoutURL.substr(clientHandoutURL.indexOf("client_user_id=") + 15);
+
+				if (clientID.indexOf("&") !== -1) {
+					clientID = clientID.substr(0, clientID.indexOf("&"));
 				}
 
-				var result = $("#body-content > h2", $(data)).text();
+				getClientHandout(clientID);
 
-				if (result !== "Client Registration Successful!") {
-					enableRegisterButton();
+				resetEnrollClientFormFields();
 
-					//navigator.notification.alert("Unknown error registering client. Please try again.", null, "Error!", "OK");
-				} else {
-					var clientHandoutURL = $(".handout-link a", $(data)).attr("href");
+				enableRegisterButton();
 
-					var clientID = clientHandoutURL.substr(clientHandoutURL.indexOf("client_user_id=") + 15);
+				navigator.notification.alert("Your client has been registered!");
 
-					if (clientID.indexOf("&") !== -1) {
-						clientID = clientID.substr(0, clientID.indexOf("&"));
-					}
+				jQT.goTo("#client-handout", "slideleft");
 
-					getClientHandout(clientID);
-
-          resetEnrollClientFormFields();
-
-					enableRegisterButton();
-
-					navigator.notification.alert("Your client has been registered!");
-
-					jQT.goTo("#client-handout", "slideleft");
-
-					getClients();
-				}
+				getClients();
+			}
 		}, "html");
 	});
 
@@ -637,27 +636,26 @@ $(function() {
 	});
 
 	$("#email-submit").click(function(event) {
-	  event.preventDefault();
+		event.preventDefault();
 
-	  $("#email-submit").attr("disabled", true);
+		$("#email-submit").attr("disabled", true);
 
-      var jqxhr = $.post("https://www.bkcert.com/forms/handouts/client-handout-both-email.php", $("form#email-client-handout").serialize(),
-        function(data, textStatus, jqXHR) {
-          if (data.indexOf("<strong>The instructional handout has been sent to:</strong>") === -1) {
-            navigator.notification.alert("Error sending email to client.", null, "Error!", "Retry");
-          }
+		$.post("https://www.bkcert.com/forms/handouts/client-handout-both-email.php", $("form#email-client-handout").serialize(), function(data, textStatus, jqXHR) {
+			if (data.indexOf("<strong>The instructional handout has been sent to:</strong>") === -1) {
+				navigator.notification.alert("Error sending email to client.", null, "Error!", "Retry");
+			} else {
+				navigator.notification.alert("Email sent to client!");
+			}
 
-          navigator.notification.alert("Email sent to client!");
+			$("#email-submit").attr("disabled", false);
+		}, "html");
+	});
 
-          $("#email-submit").attr("disabled", false);
-      }, "html");
-  });
-
-  $("#email_to").keyup(function(event) {
-    if (event.keyCode === 13) {
-      $("#email-submit").click();
-    }
-  });
+	$("#email_to").keyup(function(event) {
+		if (event.keyCode === 13) {
+			$("#email-submit").click();
+		}
+	});
 
 	$("#settings-remember-me").click(function(event) {
 		if ($("#settings-remember-me").is(":checked")) {
@@ -667,12 +665,47 @@ $(function() {
 
 			localStorage.setItem("decaf_remember_me", true);
 		} else {
-			localStorage.clear();
+			//localStorage.clear();
+			localStorage.removeItem("decaf_remember_me");
+		    localStorage.removeItem("decaf_username");
+		    localSotrage.removeItem("decaf_password");
 		}
 	});
 
-	$(".back").click(function() {
-	  temporarilyDisableLogoutButton();
+	/*$("#view-clients-back").tap(function() {
+		$("#home").append("<p>view-clients-button tapped</p>")
+
+		temporarilyDisableLogoutButton();
+	});*/
+
+	/*$("#view-client-back").bind("click", function() {
+		temporarilyDisableLogoutButton();
+	});
+
+	$("#enroll-client-back").bind("click", function() {
+		temporarilyDisableLogoutButton();
+	});
+
+	$("#client-handout-back").bind("click", function() {
+		temporarilyDisableLogoutButton();
+	});
+
+	$("#settings-back").bind("click", function() {
+		temporarilyDisableLogoutButton();
+	});*/
+
+	/*$("#home").bind("pageAnimationEnd", function(event, info) {
+        if (info.direction === "in") {
+
+		}
+
+        $(this).data('referrer'); // return the link which triggered the animation, if possible
+    })*/
+
+	$("#rate-this-app").click(function(event) {
+		event.preventDefault();
+
+		location.href = "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=493361306&onlyLatestVersion=true&pageNumber=0&sortOrdering=1&type=Purple+Software";
 	});
 
 	var currentDate = new Date();

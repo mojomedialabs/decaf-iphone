@@ -24,10 +24,10 @@
 				<img src="images/decaf-logo-transparent.png" alt="DECAF" />
 			</div>
 			<form name="aform" id="aform" action="#" method="post" enctype="multipart/form-data" data-ajax="false">
-				<input type="hidden" name="current_page" id="current_page" value="" />
-				<input type="hidden" name="next_page" id="next_page" value="" />
-				<input type="hidden" name="easter_egg" id="easter_egg" value="0" />
-				<input type="hidden" name="button_name" id="button_name" value="login" />
+				<input type="hidden" name="current_page" id="login_current_page" value="" />
+				<input type="hidden" name="next_page" id="login_next_page" value="" />
+				<input type="hidden" name="easter_egg" id="login_easter_egg" value="0" />
+				<input type="hidden" name="button_name" id="login_button_name" value="login" />
 				<ul class="edit rounded">
 					<li><input type="text" name="ccUsers__username" id="ccUsers__username" placeholder="Username" autocapitalize="off" autocomplete="off" autocorrect="off" value="" /></li>
 					<li><input type="password" name="ccUsers__password" id="ccUsers__password" placeholder="Password" value=""/></li>
@@ -44,24 +44,20 @@
 		<div id="home">
 			<div class="toolbar">
 				<h1><img src="images/decaf-banner.png" alt="DECAF" /></h1>
-				<a href="#" id="logout">Logout</a>
+				<a href="#" id="logout" class="button">Logout</a>
 				<a href="#settings" id="settings-button" class="button slideup">Settings</a>
 			</div>
 			<ul class="rounded">
 				<li class="arrow"><a href="#view-clients">View Clients</a></li>
 				<li class="arrow"><a href="#enroll-client">Enroll Client</a></li>
 			</ul>
-			<!--<div id="logout">
-				<a href="#" id="logout-button" class="grayButton">Log Out</a>
-			</div>-->
 			<div id="user-name" class="info"></div>
 		</div>
 		<div id="view-clients">
 			<div class="toolbar">
 				<h1><img src="images/decaf-banner.png" alt="DECAF" /></h1>
-				<a href="#" class="back">Back</a>
+				<a href="#" id="view-clients-back" class="back">Back</a>
 			</div>
-			<a href="#" class="back">Back</a>
 			<h1 class="page-title">View Clients</h1>
 			<ul id="clients" class="edgetoedge">
 			</ul>
@@ -72,7 +68,7 @@
 		<div id="view-client">
 			<div class="toolbar">
 				<h1><img src="images/decaf-banner.png" alt="DECAF" /></h1>
-				<a href="#" class="back">Back</a>
+				<a href="#" id="view-client-back" class="back">Back</a>
 			</div>
 			<h1 class="page-title">View Client</h1>
 			<div id="client">
@@ -84,7 +80,7 @@
 		<div id="enroll-client">
 			<div class="toolbar">
 				<h1><img src="images/decaf-banner.png" alt="DECAF" /></h1>
-				<a href="#" class="back">Back</a>
+				<a href="#" id="enroll-client-back" class="back">Back</a>
 			</div>
 			<h1 class="page-title">Enroll Client</h1>
 			<form name="enroll" id="enroll" action="#" method="post" enctype="multipart/form-data">
@@ -153,7 +149,7 @@
 		<div id="client-handout">
 			<div class="toolbar">
 				<h1><img src="images/decaf-banner.png" alt="DECAF" /></h1>
-				<a href="#home" class="back">Back</a>
+				<a href="#home" id="client-handout-back" class="back">Back</a>
 			</div>
 			<h1 class="page-title">Client Handout</h1>
 			<h2>Online Course Instructions:</h2>
@@ -192,7 +188,7 @@
 				<input type="hidden" name="client_name" id="client_name" value="" />
 				<input type="hidden" name="course_id_c1" id="course_id_c1" value="" />
 				<input type="hidden" name="course_id_c2" id="course_id_c2" value="" />
-				<input type="hidden" name="firm" id="" value="firm" />
+				<input type="hidden" name="firm" id="firm" value="firm" />
 				<input type="hidden" name="password" id="email-client-password" value="" />
 				<input type="hidden" name="randomz" id="randomz" value="" />
 				<input type="hidden" name="user_id" id="user_id" value="" />
@@ -208,7 +204,7 @@
 		<div id="settings">
 			<div class="toolbar">
 				<h1><img src="images/decaf-banner.png" alt="DECAF" /></h1>
-				<a class="back" href="#">Back</a>
+				<a href="#" id="settings-back" class="back">Back</a>
 				<a id="about-button" class="button slideup" href="#about">About</a>
 			</div>
 			<h1 class="page-title">Settings</h1>
@@ -222,9 +218,10 @@
 			<div class="logo">
 				<img src="images/decaf-logo-transparent.png" alt="DECAF" />
 			</div>
-			<p><strong>DECAF iPhone App</strong><br />Version 1.0.0 &#946;<br />Created by <a href="http://mojomedialabs.com/" rel="external">Mojo Media Labs</a></p>
+			<p><strong>DECAF iPhone App</strong><br />Version 1.0.1<br />Created by <a href="http://mojomedialabs.com/" rel="external">Mojo Media Labs</a></p>
 			<p><em>Debt Education &amp; Certification Foundation (DECAF) provides credit counseling certificates as required before filing for bankruptcy and Debtor Education courses to be completed after filing.</em></p>
 			<p><a href="https://www.bkcert.com/index.php" rel="external">Debt Education &amp; Certification Foundation</a><br/><span id="copyright">&copy; 2006-</span></p>
+			<p><a href="#" id="rate-this-app">Rate this app!</p>
 			<p><br /><a href="#" class="grayButton goback">Close</a></p>
 		</div>
 	</div>

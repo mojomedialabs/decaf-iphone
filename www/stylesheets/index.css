@@ -66,7 +66,7 @@ div#jqt #about a {
     text-decoration: none;
 }
 
-#jqt #logout {
+/*#jqt #logout {
 	background: none;
 	border-width: 0 8px 0 14px;
     color: #fff;
@@ -89,4 +89,31 @@ div#jqt #about a {
     white-space: nowrap;
     width: auto;
     -webkit-border-image: url(themes/apple/img/backButton.png) 0 8 0 14;
+}*/
+
+#jqt #settings-button {
+	background: none;
+	border-width: 0 5px;
+	color: #fff;
+	font-family: inherit;
+	font-size: 12px;
+	font-weight: bold;
+	height: 30px;
+	left: 6px;
+	line-height: 30px;
+	margin: 0;
+	overflow: hidden;
+	padding: 0 3px;
+	position: absolute;
+	right: auto;
+	text-decoration: none;
+	text-overflow: ellipsis;
+	text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0;
+	top: 8px;
+	white-space: nowrap;
+	width: auto;
+	-webkit-border-image: url(themes/apple/img/toolButton.png) 0 5 0 5;
+    /*-webkit-border-image: url(themes/apple/img/toolButton.png) 0 8 0 14;*/
 }
+
+

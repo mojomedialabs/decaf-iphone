@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		846690ED14B38F5C00AE587A /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 846690E614B38F5C00AE587A /* Icon-72.png */; };
+		846690EE14B38F5C00AE587A /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 846690E714B38F5C00AE587A /* Icon-Small-50.png */; };
+		846690EF14B38F5C00AE587A /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 846690E814B38F5C00AE587A /* Icon-Small.png */; };
+		846690F014B38F5C00AE587A /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 846690E914B38F5C00AE587A /* Icon-Small@2x.png */; };
+		846690F114B38F5C00AE587A /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 846690EA14B38F5C00AE587A /* Icon.png */; };
+		846690F214B38F5C00AE587A /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 846690EB14B38F5C00AE587A /* Icon@2x.png */; };
+		846690F314B38F5C00AE587A /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 846690EC14B38F5C00AE587A /* iTunesArtwork */; };
 		8467043C141EB46A00A19ED7 /* www in Resources */ = {isa = PBXBuildFile; fileRef = 8467043B141EB46A00A19ED7 /* www */; };
 		84834FC9141E3D070044E037 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84834FC8141E3D070044E037 /* Foundation.framework */; };
 		84834FCB141E3D070044E037 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84834FCA141E3D070044E037 /* UIKit.framework */; };
@@ -26,9 +33,6 @@
 		84834FEC141E3D070044E037 /* PhoneGap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84834FEB141E3D070044E037 /* PhoneGap.framework */; };
 		84834FF1141E3D070044E037 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 84834FEF141E3D070044E037 /* Localizable.strings */; };
 		84834FF5141E3D070044E037 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 84834FF3141E3D070044E037 /* Localizable.strings */; };
-		84834FF8141E3D070044E037 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 84834FF7141E3D070044E037 /* icon.png */; };
-		84834FFA141E3D070044E037 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84834FF9141E3D070044E037 /* icon@2x.png */; };
-		84834FFC141E3D070044E037 /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 84834FFB141E3D070044E037 /* icon-72.png */; };
 		84834FFF141E3D070044E037 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 84834FFE141E3D070044E037 /* Default.png */; };
 		84835001141E3D070044E037 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84835000141E3D070044E037 /* Default@2x.png */; };
 		84835003141E3D070044E037 /* Capture.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 84835002141E3D070044E037 /* Capture.bundle */; };
@@ -37,6 +41,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		846690E614B38F5C00AE587A /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
+		846690E714B38F5C00AE587A /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50.png"; sourceTree = "<group>"; };
+		846690E814B38F5C00AE587A /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small.png"; sourceTree = "<group>"; };
+		846690E914B38F5C00AE587A /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
+		846690EA14B38F5C00AE587A /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		846690EB14B38F5C00AE587A /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		846690EC14B38F5C00AE587A /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		8467043B141EB46A00A19ED7 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = SOURCE_ROOT; };
 		84834FC4141E3D060044E037 /* DECAF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DECAF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84834FC8141E3D070044E037 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -59,9 +70,6 @@
 		84834FEB141E3D070044E037 /* PhoneGap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhoneGap.framework; path = /Users/Shared/PhoneGap/Frameworks/PhoneGap.framework; sourceTree = "<absolute>"; };
 		84834FF0141E3D070044E037 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		84834FF4141E3D070044E037 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = Resources/es.lproj/Localizable.strings; sourceTree = "<group>"; };
-		84834FF7141E3D070044E037 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = Resources/icons/icon.png; sourceTree = "<group>"; };
-		84834FF9141E3D070044E037 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "Resources/icons/icon@2x.png"; sourceTree = "<group>"; };
-		84834FFB141E3D070044E037 /* icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-72.png"; path = "Resources/icons/icon-72.png"; sourceTree = "<group>"; };
 		84834FFE141E3D070044E037 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/splash/Default.png; sourceTree = "<group>"; };
 		84835000141E3D070044E037 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/splash/Default@2x.png"; sourceTree = "<group>"; };
 		84835002141E3D070044E037 /* Capture.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Capture.bundle; path = Resources/Capture.bundle; sourceTree = "<group>"; };
@@ -106,6 +114,7 @@
 		84834FB6141E3D060044E037 = {
 			isa = PBXGroup;
 			children = (
+				8467043B141EB46A00A19ED7 /* www */,
 				84834FE2141E3D070044E037 /* DECAF */,
 				84834FC7141E3D060044E037 /* Frameworks */,
 				84834FC5141E3D060044E037 /* Products */,
@@ -143,7 +152,6 @@
 		84834FE2141E3D070044E037 /* DECAF */ = {
 			isa = PBXGroup;
 			children = (
-				8467043B141EB46A00A19ED7 /* www */,
 				84834FEB141E3D070044E037 /* PhoneGap.framework */,
 				84834FED141E3D070044E037 /* Resources */,
 				84835006141E3D070044E037 /* Classes */,
@@ -196,9 +204,13 @@
 		84834FF6141E3D070044E037 /* icons */ = {
 			isa = PBXGroup;
 			children = (
-				84834FF7141E3D070044E037 /* icon.png */,
-				84834FF9141E3D070044E037 /* icon@2x.png */,
-				84834FFB141E3D070044E037 /* icon-72.png */,
+				846690E614B38F5C00AE587A /* Icon-72.png */,
+				846690E714B38F5C00AE587A /* Icon-Small-50.png */,
+				846690E814B38F5C00AE587A /* Icon-Small.png */,
+				846690E914B38F5C00AE587A /* Icon-Small@2x.png */,
+				846690EA14B38F5C00AE587A /* Icon.png */,
+				846690EB14B38F5C00AE587A /* Icon@2x.png */,
+				846690EC14B38F5C00AE587A /* iTunesArtwork */,
 			);
 			name = icons;
 			sourceTree = "<group>";
@@ -286,14 +298,18 @@
 				84834FE7141E3D070044E037 /* InfoPlist.strings in Resources */,
 				84834FF1141E3D070044E037 /* Localizable.strings in Resources */,
 				84834FF5141E3D070044E037 /* Localizable.strings in Resources */,
-				84834FF8141E3D070044E037 /* icon.png in Resources */,
-				84834FFA141E3D070044E037 /* icon@2x.png in Resources */,
-				84834FFC141E3D070044E037 /* icon-72.png in Resources */,
 				84834FFF141E3D070044E037 /* Default.png in Resources */,
 				84835001141E3D070044E037 /* Default@2x.png in Resources */,
 				84835003141E3D070044E037 /* Capture.bundle in Resources */,
 				84835005141E3D070044E037 /* PhoneGap.plist in Resources */,
 				8467043C141EB46A00A19ED7 /* www in Resources */,
+				846690ED14B38F5C00AE587A /* Icon-72.png in Resources */,
+				846690EE14B38F5C00AE587A /* Icon-Small-50.png in Resources */,
+				846690EF14B38F5C00AE587A /* Icon-Small.png in Resources */,
+				846690F014B38F5C00AE587A /* Icon-Small@2x.png in Resources */,
+				846690F114B38F5C00AE587A /* Icon.png in Resources */,
+				846690F214B38F5C00AE587A /* Icon@2x.png in Resources */,
+				846690F314B38F5C00AE587A /* iTunesArtwork in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -362,13 +378,64 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		847338D7148EC67D009CB80A /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv6,
+					armv7,
+				);
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Mojo Media Labs";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Mojo Media Labs";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				PROVISIONING_PROFILE = "FB1E8670-4A44-4668-B10B-BA44EA148BAE";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FB1E8670-4A44-4668-B10B-BA44EA148BAE";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = NO;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Distribution;
+		};
+		847338D8148EC67D009CB80A /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sean Eshbaugh (FNE5M62VA3)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = /Users/Shared/PhoneGap/Frameworks;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "DECAF/DECAF-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "PHONEGAP_FRAMEWORK=YES";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INFOPLIST_FILE = "DECAF/DECAF-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "1F4AE318-32B0-4C1C-8F0B-788E2C0854B5";
+				SKIP_INSTALL = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Distribution;
+		};
 		8483500C141E3D070044E037 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
+				ARCHS = (
+					armv6,
+					armv7,
+				);
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Mojo Media Labs";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Mojo Media Labs";
+				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -381,8 +448,11 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				PROVISIONING_PROFILE = "FB1E8670-4A44-4668-B10B-BA44EA148BAE";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FB1E8670-4A44-4668-B10B-BA44EA148BAE";
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = NO;
 			};
 			name = Debug;
 		};
@@ -390,16 +460,23 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ARCHS = (
+					armv6,
+					armv7,
+				);
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Mojo Media Labs";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Mojo Media Labs";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				PROVISIONING_PROFILE = "FB1E8670-4A44-4668-B10B-BA44EA148BAE";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FB1E8670-4A44-4668-B10B-BA44EA148BAE";
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -408,6 +485,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sean Eshbaugh (FNE5M62VA3)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = /Users/Shared/PhoneGap/Frameworks;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -417,6 +495,8 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "DECAF/DECAF-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "1F4AE318-32B0-4C1C-8F0B-788E2C0854B5";
+				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -426,6 +506,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sean Eshbaugh (FNE5M62VA3)";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = /Users/Shared/PhoneGap/Frameworks;
@@ -435,6 +516,8 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "DECAF/DECAF-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "1F4AE318-32B0-4C1C-8F0B-788E2C0854B5";
+				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
@@ -449,6 +532,7 @@
 			buildConfigurations = (
 				8483500C141E3D070044E037 /* Debug */,
 				8483500D141E3D070044E037 /* Release */,
+				847338D7148EC67D009CB80A /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -458,6 +542,7 @@
 			buildConfigurations = (
 				8483500F141E3D070044E037 /* Debug */,
 				84835010141E3D070044E037 /* Release */,
+				847338D8148EC67D009CB80A /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
